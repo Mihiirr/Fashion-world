@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import React from "react";
 import Logo from "~/components/Logo";
 
@@ -15,7 +15,7 @@ const login = (props: Props) => {
           <div className="flex items-center justify-center text-4xl mb-10">
             <p className="text-5xl">LOGIN</p>
           </div>
-          <form className="w-full flex flex-col items-center">
+          <Form className="w-full flex flex-col items-center">
             <div className="flex flex-col h-20 py-1 w-5/6 justify-between mb-6">
               <label htmlFor="email" className="text-xl">
                 Email
@@ -44,7 +44,7 @@ const login = (props: Props) => {
             <div className="flex items-center justify-center h-10 w-5/6 mb-5 bg-black text-white">
               <div className="text-xl">SIGN IN</div>
             </div>
-          </form>
+          </Form>
           <div className="flex items-center justify-center w-5/6">
             <p className="text-xl">
               Don&apos;t have an account?{" "}
