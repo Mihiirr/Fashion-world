@@ -1,3 +1,4 @@
+import { MetaFunction } from "@remix-run/node";
 import ItemContainer from "~/components/ItemContainer";
 import Layout from "~/components/Layout";
 
@@ -62,3 +63,10 @@ export default function Index() {
     </Layout>
   );
 }
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Fashion world",
+    description: `Best Items ever`,
+  };
+};
