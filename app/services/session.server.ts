@@ -51,21 +51,11 @@ function getUserSession(request: Request) {
   return storage.getSession(request.headers.get("Cookie"));
 }
 
-export async function getUserId(request: Request) {
+export async function getLoggedInUserInfo(request: Request) {
   const session = await getUserSession(request);
   const userId = session.get("userId");
-  const user = await db.user.findUnique({
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      Order: true,
-      Liked: true,
-    },
-    where: { id: userId },
-  });
   if (!userId || typeof userId !== "string") return null;
-  return user;
+  return userId;
 }
 
 export async function requireUserId(

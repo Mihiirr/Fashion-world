@@ -9,17 +9,16 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import styles from "./styles/app.css";
-import { getUserId } from "./services/session.server";
+import { getLoggedInUserInfo } from "./services/session.server";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: styles }];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await getUserId(request);
+  const user = await getLoggedInUserInfo(request);
   return {
     data: user,
-    errors: null,
   };
 };
 

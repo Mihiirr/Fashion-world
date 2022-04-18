@@ -1,8 +1,8 @@
 import type { ActionFunction } from "@remix-run/node";
 import { Form, Link, useActionData } from "@remix-run/react";
 import React from "react";
-import Logo from "../../Components/Logo";
-import { db } from "../../services/client.server";
+import Logo from "~/Components/Logo";
+import { db } from "~/services/client.server";
 import { createUserSession, register } from "~/services/session.server";
 
 type Props = {};
@@ -115,7 +115,7 @@ const Register: React.FC<Props> = (props) => {
               type="submit"
               className="flex items-center justify-center h-10 w-5/6 mb-5 bg-black text-white text-xl"
             >
-              SIGN IN
+              SIGN UP
             </button>
             {actionData?.formError ? (
               <p className="text-red-500">

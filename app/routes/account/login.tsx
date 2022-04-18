@@ -2,7 +2,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { useActionData, Form, Link } from "@remix-run/react";
 import React from "react";
 import Logo from "~/components/Logo";
-import { createUserSession, login } from "../../services/session.server";
+import { createUserSession, login } from "~/services/session.server";
 
 type Props = {};
 
