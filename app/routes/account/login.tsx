@@ -57,7 +57,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 const Login: React.FC<Props> = (props) => {
   const actionData = useActionData<ActionData>();
-  console.log(actionData?.fieldErrors);
   return (
     <div>
       <div className="h-20 w-full mx-auto flex items-center justify-center border-b-2 mb-10">

@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ["Josefin Slab", ...defaultTheme.fontFamily.sans],
+        sans: ["Josefin Slab", ...defaultTheme.fontFamily.sans],
       },
     },
   },

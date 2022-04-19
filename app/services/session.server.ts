@@ -27,6 +27,15 @@ export async function login({ username, password }: LoginForm) {
   return { id: user.id, username };
 }
 
+export async function logout(request: Request) {
+  const session = await getUserSession(request);
+  return redirect("/account/login", {
+    headers: {
+      "Set-Cookie": await storage.destroySession(session),
+    },
+  });
+}
+
 const sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret) {
   throw new Error("SESSION_SECRET must be set");
@@ -35,9 +44,6 @@ if (!sessionSecret) {
 const storage = createCookieSessionStorage({
   cookie: {
     name: "Fw_session",
-    // normally you want this to be `secure: true`
-    // but that doesn't work on localhost for Safari
-    // https://web.dev/when-to-use-local-https/
     secure: true,
     secrets: [sessionSecret],
     sameSite: "lax",
@@ -92,15 +98,6 @@ export async function getUser(request: Request) {
   } catch {
     throw logout(request);
   }
-}
-
-export async function logout(request: Request) {
-  const session = await getUserSession(request);
-  return redirect("/account/login", {
-    headers: {
-      "Set-Cookie": await storage.destroySession(session),
-    },
-  });
 }
 
 export async function createUserSession(userId: string) {
