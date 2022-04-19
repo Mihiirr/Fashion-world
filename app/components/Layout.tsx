@@ -58,12 +58,14 @@ const Layout: React.FC<Props> = ({ children }) => {
                         My Account
                       </div>
                     </Link>
-                    <Link
-                      to="/account/logout"
-                      className="hover:bg-red-300 hover:cursor-pointer rounded-md flex items-center px-2 h-10 text-xl"
-                    >
-                      Sign Out
-                    </Link>
+                    <form action="/account/logout" method="post">
+                      <button
+                        type="submit"
+                        className="hover:bg-red-300 hover:cursor-pointer rounded-md flex items-center px-2 h-10 w-full text-xl"
+                      >
+                        Sign Out
+                      </button>
+                    </form>
                   </div>
                 )}
               </div>
