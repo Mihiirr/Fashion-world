@@ -1,4 +1,4 @@
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import { json, LinksFunction, LoaderFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -9,34 +9,47 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import styles from "./styles/app.css";
-import { getLoggedInUserInfo } from "./services/session.server";
+import { getUser } from "./services/session.server";
+import { RootContextProvider } from "./context/RootContext";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: styles }];
+  return [
+    { rel: "stylesheet", href: styles },
+    {
+      rel: "stylesheet",
+      href: "https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@500&display=swap",
+    },
+  ];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await getLoggedInUserInfo(request);
-  return {
-    data: user,
+  const user = await getUser(request);
+  const data = {
+    user,
   };
+  return json(data);
 };
 
 export default function App() {
   const loaderData = useLoaderData();
-  console.log(loaderData);
+  const rootContextData = {
+    user: loaderData.user,
+    isAuthModalOpen: false,
+  };
   return (
-    <html lang="en">
-      <head>
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <Outlet />
-        <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
-      </body>
-    </html>
+    <RootContextProvider initState={rootContextData}>
+      <html lang="en">
+        <head>
+          <Meta />
+          <Links />
+        </head>
+        <body>
+          <Outlet />
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </body>
+      </html>
+    </RootContextProvider>
   );
 }
