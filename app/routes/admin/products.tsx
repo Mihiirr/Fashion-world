@@ -1,6 +1,7 @@
-import { MetaFunction } from "@remix-run/node";
+import React from "react";
 import ItemContainer from "~/components/ItemContainer";
-import Layout from "~/components/Layout";
+
+type Props = {};
 
 const FeaturedImages = [
   {
@@ -32,27 +33,16 @@ const JwellerySetImages = [
   },
 ];
 
-export default function Index() {
+const Products: React.FC<Props> = (props) => {
   return (
-    <Layout>
-      {/* Corousel */}
-      <div className="max-w-7xl mx-auto h-96 mt-20 bg-stone-300">
-        <img
-          src="/corousel_watch.webp"
-          height="384"
-          width="1280"
-          alt="corousel"
-        />
-      </div>
-
+    <div>
       {/* Featured Items */}
       <ItemContainer
-        title="Featured Items"
+        title="Dresses"
         height="379"
         width="252"
         images={FeaturedImages}
       />
-
       {/* Jwellery Set */}
       <ItemContainer
         title="Jewellery Set"
@@ -60,13 +50,8 @@ export default function Index() {
         width="256"
         images={JwellerySetImages}
       />
-    </Layout>
+    </div>
   );
-}
+};
 
-// export const meta: MetaFunction = () => {
-//   return {
-//     title: "Fashion world",
-//     description: `Best Items ever`,
-//   };
-// };
+export default Products;

@@ -47,13 +47,13 @@ const Layout: React.FC<Props> = ({ children }) => {
                 {UserDropdown && (
                   <div className="h-auto w-52 bg-white absolute top-30 right-20 rounded-lg p-4 shadow-xl z-10">
                     {user.role === "ADMIN" && (
-                      <Link to="account/dashboard">
+                      <Link to="/admin/dashboard">
                         <div className="hover:bg-stone-200 hover:cursor-pointer rounded-md flex items-center px-2 h-10 text-xl">
                           Dashboard
                         </div>
                       </Link>
                     )}
-                    <Link to="account/profile">
+                    <Link to="/account/profile">
                       <div className="hover:bg-stone-200 hover:cursor-pointer rounded-md flex items-center px-2 h-10 text-xl">
                         My Account
                       </div>

@@ -22,14 +22,16 @@ const ItemContainer: React.FC<Props> = (props) => {
       </div>
       <div className="flex w-full justify-between">
         {props.images.map((items) => (
-          <img
-            key={items.name}
-            src={items.name!}
-            height={props.height}
-            width={props.width}
-            alt="items"
-            className="hover:cursor-pointer"
-          />
+          <Link to="/productdetail">
+            <img
+              key={items.name}
+              src={items.name!}
+              height={props.height}
+              width={props.width}
+              alt="items"
+              className="hover:cursor-pointer"
+            />
+          </Link>
         ))}
       </div>
       <div className="mt-10 flex w-full items-center justify-center">
