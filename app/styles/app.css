@@ -724,6 +724,11 @@ Ensure the default browser behavior of the `hidden` attribute.
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
+.bg-stone-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(168 162 158 / var(--tw-bg-opacity));
+}
+
 .p-20 {
   padding: 5rem;
 }
@@ -734,6 +739,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .p-8 {
   padding: 2rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
 }
 
 .px-2 {
@@ -806,6 +815,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-normal {
+  font-weight: 400;
 }
 
 .text-red-500 {

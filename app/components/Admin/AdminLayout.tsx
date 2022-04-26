@@ -1,6 +1,5 @@
 import { Link } from "@remix-run/react";
 import React from "react";
-import classNames from "~/utils/classnames";
 import Logo from "../Logo";
 
 type Props = {
@@ -36,9 +35,7 @@ const AdminLayout: React.FC<Props> = ({ children }) => {
     <div className="min-h-screen bg-stone-50 pb-10">
       {/* Header */}
       <div className="h-20 w-full border-b-2 border-gray-200 bg-white flex items-center px-8 mb-20">
-        <Link to="/">
-          <Logo size="small" />
-        </Link>
+        <Logo size="small" />
         <div
           id="dashboard"
           className="flex ml-12 items-center justify-between text-lg target:bg-blue-300"
