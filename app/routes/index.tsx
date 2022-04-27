@@ -1,38 +1,23 @@
-import { MetaFunction } from "@remix-run/node";
+import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import ItemContainer from "~/components/ItemContainer";
 import Layout from "~/components/Layout";
+import { useLoaderData } from "@remix-run/react";
+import {
+  getAllDressProduct,
+  getAllJewelleryProduct,
+} from "../../prisma/seed-data";
 
-const FeaturedImages = [
-  {
-    name: "/dress1.jpg",
-  },
-  {
-    name: "/dress2.jpg",
-  },
-  {
-    name: "/dress3.jpg",
-  },
-  {
-    name: "/dress4.jpg",
-  },
-];
-
-const JwellerySetImages = [
-  {
-    name: "/JWJSET1.webp",
-  },
-  {
-    name: "/JWJSET2.webp",
-  },
-  {
-    name: "/JWJSET3.webp",
-  },
-  {
-    name: "/JWJSET4.webp",
-  },
-];
+export const loader: LoaderFunction = async ({ request }) => {
+  const DressProducts = await getAllDressProduct();
+  const JewelleryProducts = await getAllJewelleryProduct();
+  return {
+    DressProducts,
+    JewelleryProducts,
+  };
+};
 
 export default function Index() {
+  const { DressProducts, JewelleryProducts } = useLoaderData();
   return (
     <Layout>
       {/* Corousel */}
@@ -50,7 +35,7 @@ export default function Index() {
         title="Featured Items"
         height="379"
         width="252"
-        images={FeaturedImages}
+        product={DressProducts}
       />
 
       {/* Jwellery Set */}
@@ -58,15 +43,8 @@ export default function Index() {
         title="Jewellery Set"
         height="256"
         width="256"
-        images={JwellerySetImages}
+        product={JewelleryProducts}
       />
     </Layout>
   );
 }
-
-// export const meta: MetaFunction = () => {
-//   return {
-//     title: "Fashion world",
-//     description: `Best Items ever`,
-//   };
-// };

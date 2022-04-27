@@ -5,8 +5,13 @@ type Props = {
   title: string;
   height: string;
   width: string;
-  images: {
+  product: {
+    id: string;
     name: string;
+    image: string;
+    category: string;
+    price: string;
+    isNew: boolean;
   }[];
 };
 
@@ -21,10 +26,10 @@ const ItemContainer: React.FC<Props> = (props) => {
         <div className="h-2/4 w-4/12 border-t-2"></div>
       </div>
       <div className="flex w-full justify-between">
-        {props.images.map((items) => (
-          <Link to={items.name.substring(0, 7)} key={items.name}>
+        {props.product.map((items) => (
+          <Link to={items.id} key={items.id}>
             <img
-              src={items.name}
+              src={items.image}
               height={props.height}
               width={props.width}
               alt="items"
