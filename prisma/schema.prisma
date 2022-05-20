@@ -19,14 +19,13 @@ enum UserRole {
 
 model User {
   id         String   @id @default(cuid())
-  email      String?   @unique
+  email      String?  @unique
   username   String   @unique
   password   String
   role       UserRole @default(USER)
   createdAt  DateTime @default(now())
   modifiedAt DateTime @default(now())
   Order      Order[]
-  Liked      Liked[]
 }
 
 model Order {
@@ -46,22 +45,15 @@ model Order {
 }
 
 model Product {
-  id       String  @id @default(uuid())
-  name     String
-  category String
-  image    String
-  price    Int
-  inStock  Int     @default(0)
-  rating   Int     @default(0)
-  isNew    Boolean @default(false)
-}
-
-model Liked {
-  id        String  @id @default(uuid())
-  userId    String
-  productId String?
-  User      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Product   Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id         String  @id @default(uuid())
+  name       String
+  category   String
+  image      String
+  price      Int
+  inStock    Int     @default(0)
+  rating     Int     @default(0)
+  isNew      Boolean @default(false)
+  isFeatured Boolean @default(false)
 }
 
 model OrderItems {

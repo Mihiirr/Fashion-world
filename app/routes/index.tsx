@@ -3,21 +3,21 @@ import ItemContainer from "~/components/ItemContainer";
 import Layout from "~/components/Layout";
 import { useLoaderData } from "@remix-run/react";
 import {
-  getAllDressProduct,
-  getAllJewelleryProduct,
+  getAllFeaturedDressProduct,
+  getAllFeaturedJewelleryProduct,
 } from "../../prisma/seed-data";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const DressProducts = await getAllDressProduct();
-  const JewelleryProducts = await getAllJewelleryProduct();
+  const FeaturedDressProducts = await getAllFeaturedDressProduct();
+  const FeaturedJewelleryProducts = await getAllFeaturedJewelleryProduct();
   return {
-    DressProducts,
-    JewelleryProducts,
+    FeaturedDressProducts: FeaturedDressProducts,
+    FeaturedJewelleryProducts: FeaturedJewelleryProducts,
   };
 };
 
 export default function Index() {
-  const { DressProducts, JewelleryProducts } = useLoaderData();
+  const { FeaturedDressProducts, FeaturedJewelleryProducts } = useLoaderData();
   return (
     <Layout>
       {/* Corousel */}
@@ -35,7 +35,7 @@ export default function Index() {
         title="Featured Items"
         height="379"
         width="252"
-        product={DressProducts}
+        product={FeaturedDressProducts}
       />
 
       {/* Jwellery Set */}
@@ -43,7 +43,7 @@ export default function Index() {
         title="Jewellery Set"
         height="256"
         width="256"
-        product={JewelleryProducts}
+        product={FeaturedJewelleryProducts}
       />
     </Layout>
   );

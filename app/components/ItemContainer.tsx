@@ -1,5 +1,6 @@
 import { Link } from "@remix-run/react";
 import React from "react";
+import Button from "./Button";
 
 type Props = {
   title: string;
@@ -27,7 +28,7 @@ const ItemContainer: React.FC<Props> = (props) => {
       </div>
       <div className="flex w-full justify-between">
         {props.product.map((items) => (
-          <Link to={items.id} key={items.id}>
+          <Link to={`/${items.id}`} key={items.id}>
             <img
               src={items.image}
               height={props.height}
@@ -39,8 +40,10 @@ const ItemContainer: React.FC<Props> = (props) => {
         ))}
       </div>
       <div className="mt-10 flex w-full items-center justify-center">
-        <div className="h-10 w-32 border-2 border-gray-300 rounded-sm flex items-center justify-center text-xl hover:cursor-pointer hover:bg-stone-100 active:bg-stone-200">
-          <Link to="/">See more</Link>
+        <div className="w-32">
+          <Link to="/">
+            <Button>See more</Button>
+          </Link>
         </div>
       </div>
     </div>

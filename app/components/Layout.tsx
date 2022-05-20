@@ -69,7 +69,9 @@ const Layout: React.FC<Props> = ({ children }) => {
                   </div>
                 )}
               </div>
-              <CartIcon className="rounded-md hover:cursor-pointer" />
+              <Link to="/cart">
+                <CartIcon className="rounded-md hover:cursor-pointer" />
+              </Link>
             </div>
           )}
         </div>

@@ -8,6 +8,7 @@ export function getAllProducts() {
       price: "799",
       inStock: "10",
       isNew: false,
+      isFeatured: true,
     },
     {
       id: "2",
@@ -17,6 +18,7 @@ export function getAllProducts() {
       price: "700",
       inStock: "19",
       isNew: true,
+      isFeatured: true,
     },
     {
       id: "3",
@@ -26,6 +28,7 @@ export function getAllProducts() {
       price: "999",
       inStock: "7",
       isNew: false,
+      isFeatured: true,
     },
     {
       id: "4",
@@ -35,6 +38,17 @@ export function getAllProducts() {
       price: "1299",
       inStock: "5",
       isNew: true,
+      isFeatured: false,
+    },
+    {
+      id: "9",
+      name: "Dress5",
+      category: "dress",
+      image: "/dress5.jpg",
+      price: "100",
+      inStock: "5",
+      isNew: false,
+      isFeatured: true,
     },
     {
       id: "5",
@@ -44,6 +58,7 @@ export function getAllProducts() {
       price: "1800",
       inStock: "10",
       isNew: false,
+      isFeatured: true,
     },
     {
       id: "6",
@@ -53,6 +68,7 @@ export function getAllProducts() {
       price: "900",
       inStock: "19",
       isNew: true,
+      isFeatured: true,
     },
     {
       id: "7",
@@ -62,6 +78,7 @@ export function getAllProducts() {
       price: "700",
       inStock: "7",
       isNew: false,
+      isFeatured: true,
     },
     {
       id: "8",
@@ -71,6 +88,7 @@ export function getAllProducts() {
       price: "1299",
       inStock: "5",
       isNew: true,
+      isFeatured: true,
     },
   ];
 }
@@ -80,9 +98,19 @@ export async function getAllDressProduct() {
   return products.filter((item) => item.category === "dress");
 }
 
+export async function getAllFeaturedDressProduct() {
+  const products = await getAllDressProduct();
+  return products.filter((item) => item.isFeatured === true);
+}
+
 export async function getAllJewelleryProduct() {
   const products = await getAllProducts();
   return products.filter((item) => item.category === "jewellery");
+}
+
+export async function getAllFeaturedJewelleryProduct() {
+  const products = await getAllJewelleryProduct();
+  return products.filter((item) => item.isFeatured === true);
 }
 
 export async function findUniqueProduct(id: string) {

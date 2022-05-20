@@ -77,7 +77,7 @@ const Register: React.FC<Props> = (props) => {
             className="py-4 w-full h-auto flex flex-col items-center"
           >
             <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
-              <label htmlFor="username" className="text-xl">
+              <label htmlFor="username-input" className="text-xl">
                 Username
               </label>
               <input
@@ -94,7 +94,7 @@ const Register: React.FC<Props> = (props) => {
               ) : null}
             </div>
             <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
-              <label htmlFor="password" className="text-xl">
+              <label htmlFor="password-input" className="text-xl">
                 password
               </label>
               <input
