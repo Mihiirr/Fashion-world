@@ -3,7 +3,7 @@ import { ActionFunction, LoaderFunction } from "@remix-run/node";
 import {
   getAllDressProduct,
   getAllJewelleryProduct,
-} from "../../../prisma/seed-data";
+} from "../../../../prisma/seed-data";
 import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import ProductContainer from "~/components/Admin/products/ProductContainer";
 import Button from "~/components/Button";
@@ -24,12 +24,11 @@ export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const name = form.get("name");
   const category = form.get("category");
-  const image = form.get("image");
+  const image = form.get("image")?.toString();
   const price = form.get("price");
   const inStock = form.get("instock");
   const isNew = form.get("isnew") === "on" ? true : false;
   const isFeatured = form.get("isfeatured") === "on" ? true : false;
-  console.log(image);
   if (
     typeof name !== "string" ||
     typeof category !== "string" ||
@@ -44,7 +43,7 @@ export const action: ActionFunction = async ({ request }) => {
   return addAProduct(
     name,
     category,
-    "dress2",
+    "/dress2.jpg",
     parseInt(price),
     parseInt(inStock),
     isNew,
@@ -54,7 +53,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 const Products: React.FC<Props> = (props) => {
   const actionData = useActionData();
-  console.log(actionData);
   const [IsFormOpen, SetIsFormOpen] = useState(false);
   const { JewelleryProducts, dbAllProducts } = useLoaderData();
   const formHandler = () => {
@@ -70,11 +68,12 @@ const Products: React.FC<Props> = (props) => {
       </div>
 
       {/* Form */}
-      {IsFormOpen ? (
+      {IsFormOpen && (
         <Form
           method="post"
-          className="py-4 w-full h-auto flex flex-col items-center"
+          className="py-4 max-w-7xl mx-auto h-auto flex flex-col items-center"
           encType="multipart/form-data"
+          onSubmit={formHandler}
         >
           <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
             <label htmlFor="name-input" className="text-xl">
@@ -132,37 +131,35 @@ const Products: React.FC<Props> = (props) => {
               className="h-10 w-full border-2 px-4"
             />
           </div>
-          <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
-            <label htmlFor="isnew-input" className="text-xl">
-              IsNew
-            </label>
-            <input
-              id="isnew-input"
-              name="isnew"
-              type="checkbox"
-              className="h-10 w-full border-2 px-4"
-            />
+          <div className="flex flex-col">
+            <div className="flex items-center justify-center h-auto w-20 mb-6 mr-4">
+              <label htmlFor="isnew-input" className="text-lg mr-3">
+                IsNew
+              </label>
+              <input
+                id="isnew-input"
+                name="isnew"
+                type="checkbox"
+                // className="h-10 w-full border-2 px-4"
+              />
+            </div>
+            <div className="flex items-center justify-center h-auto w-20 mb-6">
+              <label htmlFor="isfeatured-input" className="text-lg mr-3">
+                IsFeature
+              </label>
+              <input
+                id="isfeatured-input"
+                name="isfeatured"
+                type="checkbox"
+                // className="h-10 w-full border-2 px-4"
+              />
+            </div>
           </div>
-          <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
-            <label htmlFor="isfeatured-input" className="text-xl">
-              IsFeature
-            </label>
-            <input
-              id="isfeatured-input"
-              name="isfeatured"
-              type="checkbox"
-              className="h-10 w-full border-2 px-4"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="flex items-center justify-center h-10 w-5/6 mb-5 bg-black text-white text-xl"
-          >
+          <Button type="submit" variant="secondary">
             Submit
-          </button>
+          </Button>
         </Form>
-      ) : null}
+      )}
 
       {/* Featured Items */}
       <ProductContainer

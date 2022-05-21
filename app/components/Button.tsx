@@ -7,7 +7,7 @@ const variantProps = {
   },
   secondary: {
     className:
-      "w-full p-2 border-2 rounded-sm text-xl border-stone-300 hover:bg-stone-100 active:bg-stone-200",
+      "p-2 w-full flex items-center justify-center bg-black text-white text-lg rounded-sm",
   },
 };
 

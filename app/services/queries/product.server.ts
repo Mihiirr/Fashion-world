@@ -17,6 +17,19 @@ export async function getAllProducts() {
   return product;
 }
 
+export async function totalProductCount() {
+  const totalProducts = db.product.count();
+  return totalProducts;
+}
+export async function netAmountOfTotalProduct() {
+  const netAmount = db.product.aggregate({
+    _sum: {
+      price: true,
+    },
+  });
+  return netAmount;
+}
+
 export async function addAProduct(
   name: string,
   category: string,
@@ -38,4 +51,36 @@ export async function addAProduct(
     },
   });
   return product;
+}
+
+export function getAllFeaturedProduct() {
+  return db.product.findMany({
+    where: { isFeatured: true },
+    select: {
+      id: true,
+      name: true,
+      category: true,
+      image: true,
+      price: true,
+      inStock: true,
+      rating: true,
+      isFeatured: true,
+      isNew: true,
+    },
+    take: 4,
+  });
+}
+
+export function addToFeatured(productId: string) {
+  return db.product.update({
+    data: { isFeatured: true },
+    where: { id: productId },
+  });
+}
+
+export async function removeFromFeatured(productId: string) {
+  return db.product.update({
+    data: { isFeatured: false },
+    where: { id: productId },
+  });
 }

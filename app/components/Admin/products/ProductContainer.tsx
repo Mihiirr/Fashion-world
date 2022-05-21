@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import React from "react";
 import Button from "~/components/Button";
 
@@ -42,9 +42,13 @@ const ProductContainer: React.FC<Props> = (props) => {
               <p>{items.price}</p>
             </Link>
             {items.isFeatured === true ? (
-              <Button>Remove Feature</Button>
+              <Link to={`/admin/products/removefeature/${items.id}`}>
+                <Button>Remove Feature</Button>
+              </Link>
             ) : (
-              <Button>Add to Feature</Button>
+              <Link to={`/admin/products/addfeature/${items.id}`}>
+                <Button>Add to Feature</Button>
+              </Link>
             )}
           </div>
         ))}

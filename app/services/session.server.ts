@@ -108,3 +108,7 @@ export async function createUserSession(userId: string) {
     },
   });
 }
+
+export async function totalUserCount() {
+  return db.user.count();
+}

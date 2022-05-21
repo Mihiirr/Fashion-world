@@ -6,9 +6,10 @@ import {
   getAllFeaturedDressProduct,
   getAllFeaturedJewelleryProduct,
 } from "../../prisma/seed-data";
+import { getAllFeaturedProduct } from "~/services/queries/product.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const FeaturedDressProducts = await getAllFeaturedDressProduct();
+  const FeaturedDressProducts = await getAllFeaturedProduct();
   const FeaturedJewelleryProducts = await getAllFeaturedJewelleryProduct();
   return {
     FeaturedDressProducts: FeaturedDressProducts,
