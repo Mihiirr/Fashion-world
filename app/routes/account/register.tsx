@@ -1,7 +1,7 @@
 import type { ActionFunction } from "@remix-run/node";
 import { Form, Link, useActionData } from "@remix-run/react";
 import React from "react";
-import Logo from "~/Components/Logo";
+import Logo from "~/components/Logo";
 import { db } from "~/services/client.server";
 import { createUserSession, register } from "~/services/session.server";
 
