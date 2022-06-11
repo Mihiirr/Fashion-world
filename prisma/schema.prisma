@@ -26,6 +26,7 @@ model User {
   createdAt  DateTime @default(now())
   modifiedAt DateTime @default(now())
   Order      Order[]
+  CartItems  CartItems[]
 }
 
 model Order {
@@ -45,15 +46,25 @@ model Order {
 }
 
 model Product {
-  id         String  @id @default(uuid())
+  id         String     @id @default(uuid())
+  cartId     String?
   name       String
   category   String
   image      String
   price      Int
-  inStock    Int     @default(0)
-  rating     Int     @default(0)
-  isNew      Boolean @default(false)
-  isFeatured Boolean @default(false)
+  inStock    Int        @default(0)
+  rating     Int        @default(0)
+  isNew      Boolean    @default(false)
+  isFeatured Boolean    @default(false)
+  CartItems  CartItems? @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+}
+
+model CartItems {
+  id      String    @id @default(uuid())
+  userId  String    @unique
+  Product Product[]
+  User    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model OrderItems {

@@ -41,6 +41,11 @@ const ProductContainer: React.FC<Props> = (props) => {
               <p>{items.name}</p>
               <p>{items.price}</p>
             </Link>
+            <Link to={`/admin/products/deleteproduct/${items.id}`}>
+              <button type="button" className="border-2 border-black mb-2">
+                Delete Product
+              </button>
+            </Link>
             {items.isFeatured === true ? (
               <Link to={`/admin/products/removefeature/${items.id}`}>
                 <Button>Remove Feature</Button>

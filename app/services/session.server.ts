@@ -112,3 +112,12 @@ export async function createUserSession(userId: string) {
 export async function totalUserCount() {
   return db.user.count();
 }
+
+export async function totalUserGroupBy() {
+  return db.user.groupBy({
+    by: ["role"],
+    _count: {
+      id: true,
+    },
+  });
+}

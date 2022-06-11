@@ -2,15 +2,15 @@ import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import ItemContainer from "~/components/ItemContainer";
 import Layout from "~/components/Layout";
 import { useLoaderData } from "@remix-run/react";
-import {
-  getAllFeaturedDressProduct,
-  getAllFeaturedJewelleryProduct,
-} from "../../prisma/seed-data";
-import { getAllFeaturedProduct } from "~/services/queries/product.server";
+import { getUniqueCategoryFeaturedProducts } from "~/services/queries/product.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const FeaturedDressProducts = await getAllFeaturedProduct();
-  const FeaturedJewelleryProducts = await getAllFeaturedJewelleryProduct();
+  const FeaturedDressProducts = await getUniqueCategoryFeaturedProducts(
+    "dress"
+  );
+  const FeaturedJewelleryProducts = await getUniqueCategoryFeaturedProducts(
+    "jewellery"
+  );
   return {
     FeaturedDressProducts: FeaturedDressProducts,
     FeaturedJewelleryProducts: FeaturedJewelleryProducts,

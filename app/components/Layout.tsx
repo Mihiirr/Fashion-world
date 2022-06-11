@@ -22,9 +22,9 @@ const Layout: React.FC<Props> = ({ children }) => {
     SetUserDropdown(!UserDropdown);
   };
   return (
-    <div>
+    <div className="bg-stone-50">
       {/* Header */}
-      <div className="h-20 max-w-7xl mx-auto flex items-center justify-between">
+      <div className="h-20 w-full border-b-2 border-gray-200 bg-white flex items-center px-8 mb-20">
         <div className="w-4/12">
           <SearchIcon className="rounded-md hover:cursor-pointer" />
         </div>

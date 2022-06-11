@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import { ActionFunction, LoaderFunction } from "@remix-run/node";
-import {
-  getAllDressProduct,
-  getAllJewelleryProduct,
-} from "../../../../prisma/seed-data";
 import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import ProductContainer from "~/components/Admin/products/ProductContainer";
 import Button from "~/components/Button";
-import { addAProduct, getAllProducts } from "~/services/queries/product.server";
+import {
+  addAProduct,
+  getUniqueCategoryProducts,
+} from "~/services/queries/product.server";
+import ImageUploader from "~/components/Image-uploader";
+import { ImageUpload } from "~/services/queries/imageupload.server";
 
 type Props = {};
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const dbAllProducts = await getAllProducts();
-  const JewelleryProducts = await getAllJewelleryProduct();
+  const dressProducts = await getUniqueCategoryProducts("dress");
+  const jewelleryProducts = await getUniqueCategoryProducts("jewellery");
   return {
-    dbAllProducts,
-    JewelleryProducts,
+    dressProducts,
+    jewelleryProducts,
   };
 };
 
@@ -24,11 +25,13 @@ export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const name = form.get("name");
   const category = form.get("category");
-  const image = form.get("image")?.toString();
+  const image = form.get("image");
   const price = form.get("price");
   const inStock = form.get("instock");
   const isNew = form.get("isnew") === "on" ? true : false;
   const isFeatured = form.get("isfeatured") === "on" ? true : false;
+  console.log(image);
+
   if (
     typeof name !== "string" ||
     typeof category !== "string" ||
@@ -43,7 +46,7 @@ export const action: ActionFunction = async ({ request }) => {
   return addAProduct(
     name,
     category,
-    "/dress2.jpg",
+    "/JWJSET4.webp",
     parseInt(price),
     parseInt(inStock),
     isNew,
@@ -52,12 +55,17 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 const Products: React.FC<Props> = (props) => {
-  const actionData = useActionData();
   const [IsFormOpen, SetIsFormOpen] = useState(false);
-  const { JewelleryProducts, dbAllProducts } = useLoaderData();
+  const { jewelleryProducts, dressProducts } = useLoaderData();
+
   const formHandler = () => {
     SetIsFormOpen(!IsFormOpen);
   };
+
+  const handleFileUpload = (file: File) => {
+    console.log({ file });
+  };
+
   return (
     <div>
       {/* Add Product */}
@@ -87,17 +95,13 @@ const Products: React.FC<Props> = (props) => {
               autoFocus
             />
           </div>
-          <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
-            <label htmlFor="category-input" className="text-xl">
-              Catagory
-            </label>
-            <input
-              id="category-input"
-              name="category"
-              type="text"
-              className="h-10 w-full border-2 px-4"
-            />
-          </div>
+          <label htmlFor="category-input" className="text-xl">
+            Choose a Category:
+          </label>
+          <select id="category-input" name="category">
+            <option value="dress">Dress</option>
+            <option value="jewellery">Jewellery</option>
+          </select>
           <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
             <label htmlFor="image-input" className="text-xl">
               Image
@@ -106,9 +110,12 @@ const Products: React.FC<Props> = (props) => {
               id="image-input"
               name="image"
               type="file"
+              // accept="image/png, image/jpg"
               className="h-10 w-full border-2 px-4"
             />
+            {/* <ImageUploader onChange={handleFileUpload} /> */}
           </div>
+
           <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
             <label htmlFor="price-input" className="text-xl">
               Price
@@ -136,23 +143,13 @@ const Products: React.FC<Props> = (props) => {
               <label htmlFor="isnew-input" className="text-lg mr-3">
                 IsNew
               </label>
-              <input
-                id="isnew-input"
-                name="isnew"
-                type="checkbox"
-                // className="h-10 w-full border-2 px-4"
-              />
+              <input id="isnew-input" name="isnew" type="checkbox" />
             </div>
             <div className="flex items-center justify-center h-auto w-20 mb-6">
               <label htmlFor="isfeatured-input" className="text-lg mr-3">
                 IsFeature
               </label>
-              <input
-                id="isfeatured-input"
-                name="isfeatured"
-                type="checkbox"
-                // className="h-10 w-full border-2 px-4"
-              />
+              <input id="isfeatured-input" name="isfeatured" type="checkbox" />
             </div>
           </div>
           <Button type="submit" variant="secondary">
@@ -163,17 +160,17 @@ const Products: React.FC<Props> = (props) => {
 
       {/* Featured Items */}
       <ProductContainer
-        title="Products"
+        title="Dresses"
         height="379"
         width="252"
-        product={dbAllProducts}
+        product={dressProducts}
       />
       {/* Jwellery Set */}
       <ProductContainer
         title="Jewellery Set"
         height="256"
         width="256"
-        product={JewelleryProducts}
+        product={jewelleryProducts}
       />
     </div>
   );

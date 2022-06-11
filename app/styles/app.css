@@ -505,6 +505,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 2.5rem;
 }
 
+.mb-20 {
+  margin-bottom: 5rem;
+}
+
 .mr-5 {
   margin-right: 1.25rem;
 }
@@ -521,20 +525,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 2rem;
 }
 
-.mt-5 {
-  margin-top: 1.25rem;
-}
-
 .ml-10 {
   margin-left: 2.5rem;
-}
-
-.mt-4 {
-  margin-top: 1rem;
-}
-
-.mb-20 {
-  margin-bottom: 5rem;
 }
 
 .ml-12 {
@@ -731,9 +723,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   border-color: rgb(214 211 209 / var(--tw-border-opacity));
 }
 
-.border-stone-200 {
+.border-black {
   --tw-border-opacity: 1;
-  border-color: rgb(231 229 228 / var(--tw-border-opacity));
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
 .bg-stone-50 {
@@ -754,11 +746,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .bg-stone-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(231 229 228 / var(--tw-bg-opacity));
-}
-
-.bg-stone-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(168 162 158 / var(--tw-bg-opacity));
 }
 
 .bg-stone-300 {
@@ -782,8 +769,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding: 2rem;
 }
 
-.p-1 {
-  padding: 0.25rem;
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .px-2 {
@@ -794,11 +782,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-
-.px-8 {
-  padding-left: 2rem;
-  padding-right: 2rem;
 }
 
 .py-4 {
