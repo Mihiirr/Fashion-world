@@ -91,7 +91,6 @@ export async function getUser(request: Request) {
         email: true,
         role: true,
         Order: true,
-        Liked: true,
       },
     });
     return user;

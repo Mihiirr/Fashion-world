@@ -5,31 +5,71 @@ type Props = {};
 
 const FeaturedImages = [
   {
-    name: "/dress1.jpg",
+    id: "1",
+    name: "Kurti",
+    image: "/dress1.jpg",
+    category: "dress",
+    price: "800",
+    isNew: true,
   },
   {
-    name: "/dress2.jpg",
+    id: "2",
+    name: "patyala",
+    image: "/dress2.jpg",
+    category: "dress",
+    price: "900",
+    isNew: false,
   },
   {
-    name: "/dress3.jpg",
+    id: "3",
+    name: "Surti",
+    image: "/dress3.jpg",
+    category: "dress",
+    price: "1200",
+    isNew: true,
   },
   {
-    name: "/dress4.jpg",
+    id: "4",
+    name: "Dress",
+    image: "/dress4.jpg",
+    category: "dress",
+    price: "1000",
+    isNew: false,
   },
 ];
 
 const JwellerySetImages = [
   {
-    name: "/JWJSET1.webp",
+    id: "5",
+    name: "Ring",
+    image: "/JWJSET1.webp",
+    category: "jewellery",
+    price: "899",
+    isNew: true,
   },
   {
-    name: "/JWJSET2.webp",
+    id: "6",
+    name: "Ring2",
+    image: "/JWJSET2.webp",
+    category: "jewellery",
+    price: "1299",
+    isNew: false,
   },
   {
-    name: "/JWJSET3.webp",
+    id: "7",
+    name: "Ring3",
+    image: "/JWJSET3.webp",
+    category: "jewellery",
+    price: "700",
+    isNew: true,
   },
   {
-    name: "/JWJSET4.webp",
+    id: "7",
+    name: "Ring4",
+    image: "/JWJSET4.webp",
+    category: "jewellery",
+    price: "1500",
+    isNew: false,
   },
 ];
 
@@ -41,14 +81,14 @@ const Products: React.FC<Props> = (props) => {
         title="Dresses"
         height="379"
         width="252"
-        images={FeaturedImages}
+        product={FeaturedImages}
       />
       {/* Jwellery Set */}
       <ItemContainer
         title="Jewellery Set"
         height="256"
         width="256"
-        images={JwellerySetImages}
+        product={JwellerySetImages}
       />
     </div>
   );
