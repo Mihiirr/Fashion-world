@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react";
 import React from "react";
 
 type ButtonSizes = "large" | "medium" | "small";
@@ -24,7 +25,9 @@ const Logo: React.FC<Props> = (props) => {
   const { size = "large" } = props;
   const sizeStyles = SizeVariantStyles[size];
   return (
-    <div className={Object.values(sizeStyles).join(" ")}>FASHION ₰ WORLD</div>
+    <Link to="/">
+      <div className={Object.values(sizeStyles).join(" ")}>FASHION ₰ WORLD</div>
+    </Link>
   );
 };
 
