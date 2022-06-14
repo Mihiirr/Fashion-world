@@ -1,4 +1,4 @@
-import { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { LoaderFunction } from "@remix-run/node";
 import ItemContainer from "~/components/ItemContainer";
 import Layout from "~/components/Layout";
 import { useLoaderData } from "@remix-run/react";

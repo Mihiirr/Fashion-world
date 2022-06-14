@@ -7,6 +7,7 @@ import UserIcon from "./Icons/UserIcon";
 import Logo from "./Logo";
 import { useRootContext } from "~/context/RootContext";
 import CartIcon from "./Icons/CartIcon";
+import { User } from "@prisma/client";
 
 type Props = {
   children: React.ReactNode;
@@ -32,11 +33,7 @@ const Layout: React.FC<Props> = ({ children }) => {
           <Logo size="large" />
         </div>
         <div className="w-4/12 flex justify-end">
-          {!user ? (
-            <Link to="/account/login">
-              <UserIcon className="rounded-md hover:cursor-pointer" />
-            </Link>
-          ) : (
+          {user ? (
             <div className="flex items-center justify-between">
               <p className="text-lg mr-5">Hello {user.username}</p>
               <div>
@@ -71,6 +68,10 @@ const Layout: React.FC<Props> = ({ children }) => {
               </div>
               <CartIcon className="rounded-md hover:cursor-pointer" />
             </div>
+          ) : (
+            <Link to="/account/login">
+              <UserIcon className="rounded-md hover:cursor-pointer" />
+            </Link>
           )}
         </div>
       </div>

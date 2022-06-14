@@ -20,10 +20,8 @@ export async function login({ username, password }: LoginForm) {
     where: { username },
   });
   if (!user) return null;
-
   const isCorrectPassword = await bcrypt.compare(password, user.password);
   if (!isCorrectPassword) return null;
-
   return { id: user.id, username };
 }
 
@@ -99,10 +97,10 @@ export async function getUser(request: Request) {
   }
 }
 
-export async function createUserSession(userId: string) {
+export async function createUserSession(userId: string, redirectTo: string) {
   const session = await storage.getSession();
   session.set("userId", userId);
-  return redirect("/", {
+  return redirect(redirectTo, {
     headers: {
       "Set-Cookie": await storage.commitSession(session),
     },

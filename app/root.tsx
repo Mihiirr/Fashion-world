@@ -3,7 +3,6 @@ import {
   Link,
   Links,
   LiveReload,
-  Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -13,7 +12,11 @@ import {
 import styles from "./styles/app.css";
 import { getUser } from "./services/session.server";
 import { RootContextProvider } from "./context/RootContext";
-import React, { Children } from "react";
+import React from "react";
+
+type LoaderData = {
+  user: Awaited<ReturnType<typeof getUser>>;
+};
 
 export const links: LinksFunction = () => {
   return [
@@ -27,7 +30,7 @@ export const links: LinksFunction = () => {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
-  const data = {
+  const data: LoaderData = {
     user,
   };
   return json(data);
