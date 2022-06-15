@@ -43,7 +43,7 @@ export const action: ActionFunction = async ({ request }) => {
   return addAProduct(
     name,
     category,
-    "/JWJSET4.webp",
+    "/dress4.jpg",
     parseInt(price),
     parseInt(inStock),
     isNew,
