@@ -1,5 +1,5 @@
-import { ActionFunction, json, redirect } from "@remix-run/node";
-import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
+import { ActionFunction, json } from "@remix-run/node";
+import { Link, useActionData, useSearchParams } from "@remix-run/react";
 import React from "react";
 import Logo from "~/components/Logo";
 import { db } from "~/services/client.server";

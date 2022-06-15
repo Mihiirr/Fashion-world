@@ -3,6 +3,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { findUniqueProduct } from "../../prisma/seed-data";
 import React from "react";
 import Layout from "~/components/Layout";
+import Button from "~/components/Button";
 
 type Props = {};
 
@@ -33,9 +34,7 @@ const Productdetails = (props: Props) => {
         <Layout>
           <div className="mt-10 max-w-7xl mx-auto flex">
             <Link to="/">
-              <p className="text-2xl border-2 border-stone-200 p-1 hover:bg-stone-100">
-                Back to Products
-              </p>
+              <Button>Back to Products</Button>
             </Link>
           </div>
           <div className="mt-10 max-w-7xl mx-auto flex">
@@ -44,10 +43,8 @@ const Productdetails = (props: Props) => {
               <p>{product.name}</p>
               <p>Rs. {product.price}</p>
               <p>peace white</p>
-              {product.isNew && <p className="text-sm">"New Arrival"</p>}
-              <button className="w-52 mt-4 bg-stone-400 text-white p-2 text-2xl">
-                Add to cart
-              </button>
+              {product.isNew && <p className="text-sm mb-4">"New Arrival"</p>}
+              <Button variant="secondary">Add to cart</Button>
             </div>
           </div>
         </Layout>
