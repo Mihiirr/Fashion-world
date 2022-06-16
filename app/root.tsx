@@ -8,6 +8,7 @@ import {
   Link,
   Links,
   LiveReload,
+  Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -66,7 +67,7 @@ function Document({
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
+        <Meta />
         <title>{title}</title>
         <Links />
       </head>
