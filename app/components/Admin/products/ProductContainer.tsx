@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import React from "react";
 import Button from "~/components/Button";
 
@@ -28,28 +28,22 @@ const ProductContainer: React.FC<Props> = (props) => {
         <div className="h-2/4 w-4/12 border-t-2"></div>
       </div>
       <div className="flex w-full flex-wrap">
-        {props.product.map((items) => (
-          <div className="mr-16 mb-8" key={items.id}>
-            <Link to={`/admin/${items.id}`}>
+        {props.product.map((item) => (
+          <div className="mr-16 mb-8" key={item.id}>
+            <Link to={`/admin/${item.id}`}>
               <img
-                src={items.image}
+                src={item.image}
                 height={props.height}
                 width={props.width}
                 alt="items"
                 className="hover:cursor-pointer mb-2"
               />
-              <p>{items.name}</p>
-              <p>₹{items.price}</p>
+              <p>{item.name}</p>
+              <p>₹{item.price}</p>
             </Link>
-            {items.isFeatured === true ? (
-              <Link to={`/admin/products/removefeature/${items.id}`}>
-                <Button>Remove Feature</Button>
-              </Link>
-            ) : (
-              <Link to={`/admin/products/addfeature/${items.id}`}>
-                <Button>Add to Feature</Button>
-              </Link>
-            )}
+            <Link to={`/admin/products/deleteproduct/${item.id}`}>
+              <Button variant="danger">Remove Product</Button>
+            </Link>
           </div>
         ))}
       </div>

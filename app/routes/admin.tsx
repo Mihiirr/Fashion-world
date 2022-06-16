@@ -5,6 +5,7 @@ import AdminLayout from "~/components/Admin/AdminLayout";
 import { getUser } from "~/services/session.server";
 
 type Props = {};
+
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
   if (user?.role === "USER") return redirect("/", 301);
