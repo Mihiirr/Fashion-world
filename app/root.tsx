@@ -1,4 +1,9 @@
-import { json, LinksFunction, LoaderFunction } from "@remix-run/node";
+import {
+  json,
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+} from "@remix-run/node";
 import {
   Link,
   Links,
@@ -36,9 +41,24 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json(data);
 };
 
+export const meta: MetaFunction = () => {
+  const description = `Welcome to Fshion World!`;
+  return {
+    charset: "utf-8",
+    description,
+    keywords: "Fashion,World, Shopping",
+    "twitter:image": "https://remix-jokes.lol/social.png",
+    "twitter:card": "summary_large_image",
+    "twitter:creator": "@remix_run",
+    "twitter:site": "@remix_run",
+    "twitter:title": "Fashion & World",
+    "twitter:description": description,
+  };
+};
+
 function Document({
   children,
-  title = "Fashion World",
+  title = "Fashion & World",
 }: {
   children: React.ReactNode;
   title?: string;

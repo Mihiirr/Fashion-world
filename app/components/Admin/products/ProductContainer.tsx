@@ -10,8 +10,8 @@ type Props = {
     id: string;
     name: string;
     image: string;
-    category: string;
-    price: string;
+    inStock: number;
+    price: number;
     isNew: boolean;
     isFeatured: boolean;
   }[];
@@ -39,12 +39,7 @@ const ProductContainer: React.FC<Props> = (props) => {
                 className="hover:cursor-pointer mb-2"
               />
               <p>{items.name}</p>
-              <p>{items.price}</p>
-            </Link>
-            <Link to={`/admin/products/deleteproduct/${items.id}`}>
-              <button type="button" className="border-2 border-black mb-2">
-                Delete Product
-              </button>
+              <p>₹{items.price}</p>
             </Link>
             {items.isFeatured === true ? (
               <Link to={`/admin/products/removefeature/${items.id}`}>

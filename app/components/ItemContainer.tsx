@@ -8,10 +8,7 @@ type Props = {
   width: string;
   product: {
     id: string;
-    name: string;
     image: string;
-    category: string;
-    price: string;
     isNew: boolean;
   }[];
 };

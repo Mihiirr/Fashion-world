@@ -2,35 +2,12 @@ import { redirect } from "@remix-run/node";
 import { db } from "../client.server";
 
 export async function getAllProducts() {
-  const product = await db.product.findMany({
-    select: {
-      id: true,
-      name: true,
-      category: true,
-      image: true,
-      price: true,
-      inStock: true,
-      rating: true,
-      isFeatured: true,
-      isNew: true,
-    },
-  });
+  const product = await db.product.findMany();
   return product;
 }
 
 export async function getUniqueProducts(productId: string) {
   const product = await db.product.findUnique({
-    select: {
-      id: true,
-      name: true,
-      category: true,
-      image: true,
-      price: true,
-      inStock: true,
-      rating: true,
-      isFeatured: true,
-      isNew: true,
-    },
     where: {
       id: productId,
     },
@@ -70,19 +47,10 @@ export async function deleteAProduct(productId: string) {
   return redirect(`/admin/products`);
 }
 
+// Admin Panel Services ----------------------------------------------------------------------------------------------------------------
+
 export async function getUniqueCategoryProducts(category: string) {
   const product = await db.product.findMany({
-    select: {
-      id: true,
-      name: true,
-      category: true,
-      image: true,
-      price: true,
-      inStock: true,
-      rating: true,
-      isFeatured: true,
-      isNew: true,
-    },
     where: {
       category: category,
     },
@@ -121,20 +89,12 @@ export async function netAmountOfTotalStocks() {
   return netAmount;
 }
 
+// Featured Product Services ----------------------------------------------------------------------------------------------------------------
+
 export function getUniqueCategoryFeaturedProducts(category: string) {
   return db.product.findMany({
     where: { isFeatured: true, category: category },
-    select: {
-      id: true,
-      name: true,
-      category: true,
-      image: true,
-      price: true,
-      inStock: true,
-      rating: true,
-      isFeatured: true,
-      isNew: true,
-    },
+    select: { id: true, image: true, isNew: true },
     take: 4,
   });
 }

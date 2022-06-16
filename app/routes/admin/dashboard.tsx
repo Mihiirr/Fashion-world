@@ -1,6 +1,5 @@
-import { LoaderFunction } from "@remix-run/node";
+import { json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import React from "react";
 import StaticsCard from "~/components/Admin/dashboard/StaticsCard";
 import {
   StocksInTotal,
@@ -9,7 +8,13 @@ import {
 } from "~/services/queries/product.server";
 import { totalUserCount, totalUserGroupBy } from "~/services/session.server";
 
-type Props = {};
+type LoaderData = {
+  totalStocks: number;
+  totalVarietyProduct: number;
+  totalUsers: number;
+  usersGroupBy: Array<{ role: string; _count: { id: number } }>;
+  netAmountOfTotalStock: number;
+};
 
 export const loader: LoaderFunction = async ({ request }) => {
   const totalStocks = await StocksInTotal();
@@ -17,23 +22,19 @@ export const loader: LoaderFunction = async ({ request }) => {
   const totalUsers = await totalUserCount();
   const usersGroupBy = await totalUserGroupBy();
   const netAmountOfTotalStock = await netAmountOfTotalStocks();
-  return {
+
+  const data: LoaderData = {
     totalStocks,
     totalVarietyProduct,
     totalUsers,
     usersGroupBy,
     netAmountOfTotalStock,
   };
+  return json(data);
 };
 
-const Dashboard: React.FC<Props> = (props) => {
-  const {
-    totalVarietyProduct,
-    totalUsers,
-    totalStocks,
-    usersGroupBy,
-    netAmountOfTotalStock,
-  } = useLoaderData();
+const Dashboard = () => {
+  const data = useLoaderData<LoaderData>();
   return (
     <div className="max-w-7xl mx-auto">
       <div className="mb-20 flex flex-wrap">
@@ -49,29 +50,31 @@ const Dashboard: React.FC<Props> = (props) => {
         />
         <StaticsCard
           title="Total User"
-          amount={totalUsers}
+          amount={`${data.totalUsers}`}
           description={`${
-            usersGroupBy[0] ? usersGroupBy[0]._count.id : "0"
-          }-ADMIN, ${usersGroupBy[1] ? usersGroupBy[1]._count.id : `0`}-USER `}
+            data.usersGroupBy[0] ? data.usersGroupBy[0]._count.id : "0"
+          }-ADMIN, ${
+            data.usersGroupBy[1] ? data.usersGroupBy[1]._count.id : `0`
+          }-USER `}
         />
         <StaticsCard
           title="Total Products"
-          amount={totalStocks}
-          description={`Net amount ₹${netAmountOfTotalStock}`}
+          amount={`${data.totalStocks}`}
+          description={`Net amount ₹${data.netAmountOfTotalStock}`}
         />
         <StaticsCard
           title="Total Variety"
-          amount={totalVarietyProduct}
+          amount={`${data.totalVarietyProduct}`}
           description="10 total sales"
         />
         <StaticsCard
           title="Total Sale"
-          amount="2000"
+          amount="₹2000"
           description="10 total sales"
         />
         <StaticsCard
           title="Total Sale"
-          amount="2000"
+          amount="₹2000"
           description="10 total sales"
         />
       </div>

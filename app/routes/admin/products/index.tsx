@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import ProductContainer from "~/components/Admin/products/ProductContainer";
 import Button from "~/components/Button";
@@ -10,13 +10,36 @@ import {
 
 type Props = {};
 
-export const loader: LoaderFunction = async ({ request }) => {
+type LoaderData = {
+  dressProducts: Array<{
+    id: string;
+    name: string;
+    image: string;
+    price: number;
+    inStock: number;
+    isNew: boolean;
+    isFeatured: boolean;
+  }>;
+  jewelleryProducts: Array<{
+    id: string;
+    name: string;
+    image: string;
+    price: number;
+    inStock: number;
+    isNew: boolean;
+    isFeatured: boolean;
+  }>;
+};
+
+export const loader: LoaderFunction = async () => {
   const dressProducts = await getUniqueCategoryProducts("dress");
   const jewelleryProducts = await getUniqueCategoryProducts("jewellery");
-  return {
+
+  const data: LoaderData = {
     dressProducts,
     jewelleryProducts,
   };
+  return json(data);
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -53,7 +76,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 const Products: React.FC<Props> = (props) => {
   const [IsFormOpen, SetIsFormOpen] = useState(false);
-  const { jewelleryProducts, dressProducts } = useLoaderData();
+  const data = useLoaderData<LoaderData>();
 
   const formHandler = () => {
     SetIsFormOpen(!IsFormOpen);
@@ -155,14 +178,14 @@ const Products: React.FC<Props> = (props) => {
         title="Dresses"
         height="379"
         width="252"
-        product={dressProducts}
+        product={data.dressProducts}
       />
       {/* Jwellery Set */}
       <ProductContainer
         title="Jewellery Set"
         height="256"
         width="256"
-        product={jewelleryProducts}
+        product={data.jewelleryProducts}
       />
     </div>
   );

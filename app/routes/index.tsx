@@ -1,24 +1,37 @@
-import { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { json, LoaderFunction } from "@remix-run/node";
 import ItemContainer from "~/components/ItemContainer";
 import Layout from "~/components/Layout";
 import { useLoaderData } from "@remix-run/react";
 import { getUniqueCategoryFeaturedProducts } from "~/services/queries/product.server";
+import { closeSync } from "fs";
 
-export const loader: LoaderFunction = async ({ request }) => {
+type LoaderData = {
+  FeaturedDressProducts: Array<{ id: string; image: string; isNew: boolean }>;
+  FeaturedJewelleryProducts: Array<{
+    id: string;
+    image: string;
+    isNew: boolean;
+  }>;
+};
+
+export const loader: LoaderFunction = async () => {
   const FeaturedDressProducts = await getUniqueCategoryFeaturedProducts(
     "dress"
   );
   const FeaturedJewelleryProducts = await getUniqueCategoryFeaturedProducts(
     "jewellery"
   );
-  return {
-    FeaturedDressProducts: FeaturedDressProducts,
-    FeaturedJewelleryProducts: FeaturedJewelleryProducts,
+
+  const data: LoaderData = {
+    FeaturedDressProducts,
+    FeaturedJewelleryProducts,
   };
+  return json(data);
 };
 
 export default function Index() {
-  const { FeaturedDressProducts, FeaturedJewelleryProducts } = useLoaderData();
+  const { FeaturedDressProducts, FeaturedJewelleryProducts } =
+    useLoaderData<LoaderData>();
   return (
     <Layout>
       {/* Corousel */}
