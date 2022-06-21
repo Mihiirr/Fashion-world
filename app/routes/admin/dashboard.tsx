@@ -36,7 +36,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 const Dashboard = () => {
   const data = useLoaderData<LoaderData>();
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto mt-20">
       <div className="mb-20 flex flex-wrap">
         <StaticsCard
           title="Total Sale"

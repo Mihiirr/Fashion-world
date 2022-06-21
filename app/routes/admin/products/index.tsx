@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import ProductContainer from "~/components/Admin/products/ProductContainer";
 import Button from "~/components/Button";
 import {
   addAProduct,
   getUniqueCategoryProducts,
 } from "~/services/queries/product.server";
+import ImageUploader from "~/components/ImageUploader";
+import { imageUpload } from "~/services/queries/imgupload.server";
+import ImageUploading, { ImageListType } from "react-images-uploading";
 
 type Props = {};
 
@@ -46,11 +49,13 @@ export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const name = form.get("name");
   const category = form.get("category");
-  //   const image = form.get("image");
   const price = form.get("price");
+  const image = form.get("image");
   const inStock = form.get("instock");
   const isNew = form.get("isnew") === "on" ? true : false;
   const isFeatured = form.get("isfeatured") === "on" ? true : false;
+
+  console.log({ image });
 
   if (
     typeof name !== "string" ||
@@ -75,29 +80,31 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 const Products: React.FC<Props> = (props) => {
-  const [IsFormOpen, SetIsFormOpen] = useState(false);
   const data = useLoaderData<LoaderData>();
 
-  const formHandler = () => {
-    SetIsFormOpen(!IsFormOpen);
+  const actiondata = useActionData();
+  // console.log({ actiondata });
+
+  const [images, setImages] = useState([]);
+  const maxNumber = 69;
+
+  const onChange = async (
+    imageList: ImageListType,
+    addUpdateIndex: number[] | undefined
+  ) => {
+    // data for submit
+    console.log(imageList);
+    await setImages(imageList as never[]);
   };
 
   return (
-    <div>
-      {/* Add Product */}
-      <div className="max-w-7xl mx-auto">
-        <Link to="/admin/products">
-          <Button onClick={formHandler}>Add a product</Button>
-        </Link>
-      </div>
-
-      {/* Form */}
-      {IsFormOpen && (
+    <div className="flex">
+      <div className="h-screen w-1/4 p-4 flex flex-col items-center border-r-2 border-b-2 border-stone-200">
+        <p className="text-xl underline">Add a Product</p>
         <Form
           method="post"
-          className="py-4 max-w-7xl mx-auto h-auto flex flex-col items-center"
+          className="py-4 max-w-7xl mx-auto h-auto flex flex-col"
           encType="multipart/form-data"
-          onSubmit={formHandler}
         >
           <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
             <label htmlFor="name-input" className="text-xl">
@@ -111,24 +118,14 @@ const Products: React.FC<Props> = (props) => {
               autoFocus
             />
           </div>
-          <label htmlFor="category-input" className="text-xl">
-            Choose a Category:
-          </label>
-          <select id="category-input" name="category">
-            <option value="dress">Dress</option>
-            <option value="jewellery">Jewellery</option>
-          </select>
-          <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
-            <label htmlFor="image-input" className="text-xl">
-              Image
+          <div className="mb-6">
+            <label htmlFor="category-input" className="text-xl">
+              Choose a Category:
             </label>
-            <input
-              id="image-input"
-              name="image"
-              type="file"
-              // accept="image/png, image/jpg"
-              className="h-10 w-full border-2 px-4"
-            />
+            <select id="category-input" name="category">
+              <option value="dress">Dress</option>
+              <option value="jewellery">Jewellery</option>
+            </select>
           </div>
 
           <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
@@ -167,28 +164,76 @@ const Products: React.FC<Props> = (props) => {
               <input id="isfeatured-input" name="isfeatured" type="checkbox" />
             </div>
           </div>
+
+          <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
+            <label htmlFor="image-input" className="text-xl">
+              Image
+            </label>
+            <input
+              id="image-input"
+              name="image"
+              type="file"
+              accept="image/png, image/jpg, image/webp"
+              className="h-10 w-full border-2 px-4"
+            />
+          </div>
           <Button type="submit" variant="secondary">
             Submit
           </Button>
         </Form>
-      )}
+      </div>
 
-      {/* Featured Items */}
-      <ProductContainer
-        title="Dresses"
-        height="379"
-        width="252"
-        product={data.dressProducts}
-      />
-      {/* Jwellery Set */}
-      <ProductContainer
-        title="Jewellery Set"
-        height="256"
-        width="256"
-        product={data.jewelleryProducts}
-      />
+      <div className="w-3/4 flex flex-col items-center">
+        {/* Featured Items */}
+        <ProductContainer
+          title="Dresses"
+          height="379"
+          width="252"
+          product={data.dressProducts}
+        />
+        {/* Jwellery Set */}
+        <ProductContainer
+          title="Jewellery Set"
+          height="256"
+          width="256"
+          product={data.jewelleryProducts}
+        />
+      </div>
     </div>
   );
 };
 
 export default Products;
+
+{
+  /* <ImageUploading value={images} onChange={onChange}>
+              {({
+                imageList,
+                onImageUpload,
+                onImageUpdate,
+                onImageRemove,
+                isDragging,
+                dragProps,
+              }) => (
+                // write your building UI
+                <div className="upload__image-wrapper">
+                  <button onClick={onImageUpload}>
+                    Click here to add image
+                  </button>
+                  {imageList.map((image, index) => (
+                    <div key={index} className="image-item">
+                      <img src={image.dataURL} alt="" width="100" />
+                      <div className="image-item__btn-wrapper">
+                        <button onClick={() => onImageUpdate(index)}>
+                          Update
+                        </button>
+                        <button onClick={() => onImageRemove(index)}>
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </ImageUploading> */
+}
