@@ -32,7 +32,7 @@ const ProductContainer: React.FC<Props> = (props) => {
           <div className="mr-10 mb-8" key={item.id}>
             <Link to={`/admin/${item.id}`}>
               <img
-                src={item.image}
+                src={`/uploads/${item.image}`}
                 height={props.height}
                 width={props.width}
                 alt="items"

@@ -1,15 +1,19 @@
-import React, { useState } from "react";
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
-import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
+import React from "react";
+import {
+  ActionFunction,
+  json,
+  LoaderFunction,
+  unstable_createFileUploadHandler,
+  unstable_parseMultipartFormData,
+} from "@remix-run/node";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import ProductContainer from "~/components/Admin/products/ProductContainer";
 import Button from "~/components/Button";
 import {
   addAProduct,
   getUniqueCategoryProducts,
 } from "~/services/queries/product.server";
-import ImageUploader from "~/components/ImageUploader";
-import { imageUpload } from "~/services/queries/imgupload.server";
-import ImageUploading, { ImageListType } from "react-images-uploading";
+import { fileUploadHandler } from "~/services/queries/imgupload.server";
 
 type Props = {};
 
@@ -46,16 +50,17 @@ export const loader: LoaderFunction = async () => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const form = await request.formData();
-  const name = form.get("name");
-  const category = form.get("category");
-  const price = form.get("price");
-  const image = form.get("image");
-  const inStock = form.get("instock");
-  const isNew = form.get("isnew") === "on" ? true : false;
-  const isFeatured = form.get("isfeatured") === "on" ? true : false;
-
-  console.log({ image });
+  const formData = await unstable_parseMultipartFormData(
+    request,
+    fileUploadHandler
+  );
+  const imageUrl = formData.get("image");
+  const name = formData.get("name");
+  const category = formData.get("category");
+  const price = formData.get("price");
+  const inStock = formData.get("instock");
+  const isNew = formData.get("isnew") === "on" ? true : false;
+  const isFeatured = formData.get("isfeatured") === "on" ? true : false;
 
   if (
     typeof name !== "string" ||
@@ -67,11 +72,10 @@ export const action: ActionFunction = async ({ request }) => {
       formError: `Form not submitted correctly.`,
     };
   }
-
   return addAProduct(
     name,
     category,
-    "/dress4.jpg",
+    `${imageUrl?.name}`,
     parseInt(price),
     parseInt(inStock),
     isNew,
@@ -81,22 +85,6 @@ export const action: ActionFunction = async ({ request }) => {
 
 const Products: React.FC<Props> = (props) => {
   const data = useLoaderData<LoaderData>();
-
-  const actiondata = useActionData();
-  // console.log({ actiondata });
-
-  const [images, setImages] = useState([]);
-  const maxNumber = 69;
-
-  const onChange = async (
-    imageList: ImageListType,
-    addUpdateIndex: number[] | undefined
-  ) => {
-    // data for submit
-    console.log(imageList);
-    await setImages(imageList as never[]);
-  };
-
   return (
     <div className="flex">
       <div className="h-screen w-1/4 p-4 flex flex-col items-center border-r-2 border-b-2 border-stone-200">
@@ -204,36 +192,3 @@ const Products: React.FC<Props> = (props) => {
 };
 
 export default Products;
-
-{
-  /* <ImageUploading value={images} onChange={onChange}>
-              {({
-                imageList,
-                onImageUpload,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
-                // write your building UI
-                <div className="upload__image-wrapper">
-                  <button onClick={onImageUpload}>
-                    Click here to add image
-                  </button>
-                  {imageList.map((image, index) => (
-                    <div key={index} className="image-item">
-                      <img src={image.dataURL} alt="" width="100" />
-                      <div className="image-item__btn-wrapper">
-                        <button onClick={() => onImageUpdate(index)}>
-                          Update
-                        </button>
-                        <button onClick={() => onImageRemove(index)}>
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </ImageUploading> */
-}
