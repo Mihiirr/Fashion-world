@@ -685,10 +685,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   flex: 1 1 auto;
 }
 
-.resize {
-  resize: both;
-}
-
 .flex-col {
   flex-direction: column;
 }
