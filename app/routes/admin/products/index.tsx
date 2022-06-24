@@ -5,7 +5,7 @@ import {
   LoaderFunction,
   unstable_parseMultipartFormData,
 } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import ProductContainer from "~/components/Admin/products/ProductContainer";
 import Button from "~/components/Button";
 import {
@@ -48,12 +48,49 @@ export const loader: LoaderFunction = async () => {
   return json(data);
 };
 
+function validateName(name: unknown) {
+  if (typeof name !== "string" || name.length <= 0) {
+    return `Please enter Name!`;
+  }
+}
+
+function validatePrice(price: unknown) {
+  if (typeof price !== "string" || price.length <= 0) {
+    return `Please provide a Price!`;
+  }
+}
+function validateInStocks(inStock: unknown) {
+  if (typeof inStock !== "string" || inStock.length <= 0) {
+    return `Please tell us how much stocks are available!`;
+  }
+}
+
+type ActionData = {
+  formError?: string;
+  fieldErrors?: {
+    name: string | undefined;
+    inStock: string | undefined;
+    price: string | undefined;
+  };
+  fields?: {
+    name: string;
+    category: string;
+    price: string;
+    imageData: FormDataEntryValue;
+    inStock: string;
+    isNew: boolean;
+    isFeatured: boolean;
+  };
+};
+
+const badRequest = (data: ActionData) => json(data, { status: 400 });
+
 export const action: ActionFunction = async ({ request }) => {
   const formData = await unstable_parseMultipartFormData(
     request,
     fileUploadHandler
   );
-  const imageUrl = formData.get("image");
+  const imageData = formData.get("image");
   const name = formData.get("name");
   const category = formData.get("category");
   const price = formData.get("price");
@@ -67,17 +104,34 @@ export const action: ActionFunction = async ({ request }) => {
     typeof price !== "string" ||
     typeof inStock !== "string"
   ) {
-    return {
+    return badRequest({
       formError: `Form not submitted correctly.`,
-    };
+    });
   }
-  if (!imageUrl) {
-    throw new Error("Somthing went wrong while uploading image!!!");
+  if (!imageData) {
+    throw new Error("Image must require for the product!");
   }
+  const fields = {
+    name,
+    category,
+    price,
+    imageData,
+    inStock,
+    isNew,
+    isFeatured,
+  };
+  const fieldErrors = {
+    name: validateName(name),
+    price: validatePrice(price),
+    inStock: validateInStocks(inStock),
+  };
+  if (Object.values(fieldErrors).some(Boolean))
+    return badRequest({ fieldErrors, fields });
+
   return addAProduct(
     name,
     category,
-    `${imageUrl?.name}`,
+    imageData,
     parseInt(price),
     parseInt(inStock),
     isNew,
@@ -87,6 +141,8 @@ export const action: ActionFunction = async ({ request }) => {
 
 const Products: React.FC<Props> = (props) => {
   const data = useLoaderData<LoaderData>();
+  const actionData = useActionData<ActionData>();
+  console.log(actionData);
   return (
     <div className="flex">
       <div className="h-screen w-1/4 p-4 flex flex-col items-center border-r-2 border-b-2 border-stone-200">
@@ -106,7 +162,17 @@ const Products: React.FC<Props> = (props) => {
               type="text"
               className="h-10 w-full border-2 px-4"
               autoFocus
+              defaultValue={actionData?.fields?.name}
+              aria-invalid={Boolean(actionData?.fieldErrors?.name)}
+              aria-errormessage={
+                actionData?.fieldErrors?.name ? "name-error" : undefined
+              }
             />
+            {actionData?.fieldErrors?.name ? (
+              <p className="text-red-500" id="name-error" role="alert">
+                {actionData.fieldErrors.name}
+              </p>
+            ) : null}
           </div>
           <div className="mb-6">
             <label htmlFor="category-input" className="text-xl">
@@ -127,7 +193,17 @@ const Products: React.FC<Props> = (props) => {
               name="price"
               type="number"
               className="h-10 w-full border-2 px-4"
+              defaultValue={actionData?.fields?.price}
+              aria-invalid={Boolean(actionData?.fieldErrors?.price)}
+              aria-errormessage={
+                actionData?.fieldErrors?.price ? "price-error" : undefined
+              }
             />
+            {actionData?.fieldErrors?.price ? (
+              <p className="text-red-500" id="price-error" role="alert">
+                {actionData.fieldErrors.price}
+              </p>
+            ) : null}
           </div>
           <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
             <label htmlFor="instock-input" className="text-xl">
@@ -138,7 +214,18 @@ const Products: React.FC<Props> = (props) => {
               name="instock"
               type="number"
               className="h-10 w-full border-2 px-4"
+              placeholder="0"
+              defaultValue={0}
+              aria-invalid={Boolean(actionData?.fieldErrors?.inStock)}
+              aria-errormessage={
+                actionData?.fieldErrors?.inStock ? "inStock-error" : undefined
+              }
             />
+            {actionData?.fieldErrors?.inStock ? (
+              <p className="text-red-500" id="inStock-error" role="alert">
+                {actionData.fieldErrors.inStock}
+              </p>
+            ) : null}
           </div>
           <div className="flex flex-col">
             <div className="flex items-center justify-center h-auto w-20 mb-6 mr-4">

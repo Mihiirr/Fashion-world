@@ -1,6 +1,15 @@
 import { redirect } from "@remix-run/node";
 import { db } from "../client.server";
 
+interface ImageData {
+  name: string;
+  type: string;
+  size: number;
+  filepath: string;
+  webkitRelativePath: string;
+  lastModified: number;
+}
+
 export async function getAllProducts() {
   const product = await db.product.findMany();
   return product;
@@ -18,17 +27,18 @@ export async function getUniqueProducts(productId: string) {
 export async function addAProduct(
   name: string,
   category: string,
-  image: string,
+  image: FormDataEntryValue,
   price: number,
-  inStock: number,
+  inStock?: number,
   isNew?: boolean,
   isFeatured?: boolean
 ) {
+  const imageName = image.name;
   const product = await db.product.create({
     data: {
       name,
       category,
-      image,
+      image: imageName,
       price,
       inStock,
       isNew,
