@@ -1,4 +1,4 @@
-import { Form, Link } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import React from "react";
 import Button from "~/components/Button";
 
@@ -19,7 +19,7 @@ type Props = {
 
 const ProductContainer: React.FC<Props> = (props) => {
   return (
-    <div className="h-auto max-w-7xl mt-20 mx-auto">
+    <div className="h-auto max-w-4xl mt-20 mx-auto">
       <div className="h-20 w-full flex items-end justify-between">
         <div className="h-2/4 w-4/12 border-t-2"></div>
         <div className="h-full w-4/12 flex items-center justify-center text-3xl">
@@ -29,10 +29,10 @@ const ProductContainer: React.FC<Props> = (props) => {
       </div>
       <div className="flex w-full flex-wrap">
         {props.product.map((item) => (
-          <div className="mr-16 mb-8" key={item.id}>
+          <div className="mr-10 mb-8" key={item.id}>
             <Link to={`/admin/${item.id}`}>
               <img
-                src={item.image}
+                src={`/uploads/${item.image}`}
                 height={props.height}
                 width={props.width}
                 alt="items"

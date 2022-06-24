@@ -3,7 +3,6 @@ import ItemContainer from "~/components/ItemContainer";
 import Layout from "~/components/Layout";
 import { useLoaderData } from "@remix-run/react";
 import { getUniqueCategoryFeaturedProducts } from "~/services/queries/product.server";
-import { closeSync } from "fs";
 
 type LoaderData = {
   FeaturedDressProducts: Array<{ id: string; image: string; isNew: boolean }>;

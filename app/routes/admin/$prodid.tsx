@@ -48,7 +48,7 @@ const AdminProductDetail = () => {
         </Link>
       </div>
       <div className="mt-10 max-w-7xl mx-auto flex">
-        <img src={data.product.image} height="600" width="400" />
+        <img src={`/uploads/${data.product.image}`} height="600" width="400" />
         <form method="post" className="text-2xl ml-10">
           <div className="flex items-center">
             <p>{data.product.name}</p>

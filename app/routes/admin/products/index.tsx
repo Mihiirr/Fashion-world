@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
-import { Form, Link, useLoaderData } from "@remix-run/react";
+import React from "react";
+import {
+  ActionFunction,
+  json,
+  LoaderFunction,
+  unstable_parseMultipartFormData,
+} from "@remix-run/node";
+import { Form, useLoaderData } from "@remix-run/react";
 import ProductContainer from "~/components/Admin/products/ProductContainer";
 import Button from "~/components/Button";
 import {
   addAProduct,
   getUniqueCategoryProducts,
 } from "~/services/queries/product.server";
+import { fileUploadHandler } from "~/services/queries/imgupload.server";
 
 type Props = {};
 
@@ -43,14 +49,17 @@ export const loader: LoaderFunction = async () => {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  const form = await request.formData();
-  const name = form.get("name");
-  const category = form.get("category");
-  //   const image = form.get("image");
-  const price = form.get("price");
-  const inStock = form.get("instock");
-  const isNew = form.get("isnew") === "on" ? true : false;
-  const isFeatured = form.get("isfeatured") === "on" ? true : false;
+  const formData = await unstable_parseMultipartFormData(
+    request,
+    fileUploadHandler
+  );
+  const imageUrl = formData.get("image");
+  const name = formData.get("name");
+  const category = formData.get("category");
+  const price = formData.get("price");
+  const inStock = formData.get("instock");
+  const isNew = formData.get("isnew") === "on" ? true : false;
+  const isFeatured = formData.get("isfeatured") === "on" ? true : false;
 
   if (
     typeof name !== "string" ||
@@ -62,11 +71,13 @@ export const action: ActionFunction = async ({ request }) => {
       formError: `Form not submitted correctly.`,
     };
   }
-
+  if (!imageUrl) {
+    throw new Error("Somthing went wrong while uploading image!!!");
+  }
   return addAProduct(
     name,
     category,
-    "/dress4.jpg",
+    `${imageUrl?.name}`,
     parseInt(price),
     parseInt(inStock),
     isNew,
@@ -75,29 +86,15 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 const Products: React.FC<Props> = (props) => {
-  const [IsFormOpen, SetIsFormOpen] = useState(false);
   const data = useLoaderData<LoaderData>();
-
-  const formHandler = () => {
-    SetIsFormOpen(!IsFormOpen);
-  };
-
   return (
-    <div>
-      {/* Add Product */}
-      <div className="max-w-7xl mx-auto">
-        <Link to="/admin/products">
-          <Button onClick={formHandler}>Add a product</Button>
-        </Link>
-      </div>
-
-      {/* Form */}
-      {IsFormOpen && (
+    <div className="flex">
+      <div className="h-screen w-1/4 p-4 flex flex-col items-center border-r-2 border-b-2 border-stone-200">
+        <p className="text-xl underline">Add a Product</p>
         <Form
           method="post"
-          className="py-4 max-w-7xl mx-auto h-auto flex flex-col items-center"
+          className="py-4 max-w-7xl mx-auto h-auto flex flex-col"
           encType="multipart/form-data"
-          onSubmit={formHandler}
         >
           <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
             <label htmlFor="name-input" className="text-xl">
@@ -111,24 +108,14 @@ const Products: React.FC<Props> = (props) => {
               autoFocus
             />
           </div>
-          <label htmlFor="category-input" className="text-xl">
-            Choose a Category:
-          </label>
-          <select id="category-input" name="category">
-            <option value="dress">Dress</option>
-            <option value="jewellery">Jewellery</option>
-          </select>
-          <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
-            <label htmlFor="image-input" className="text-xl">
-              Image
+          <div className="mb-6">
+            <label htmlFor="category-input" className="text-xl">
+              Choose a Category:
             </label>
-            <input
-              id="image-input"
-              name="image"
-              type="file"
-              // accept="image/png, image/jpg"
-              className="h-10 w-full border-2 px-4"
-            />
+            <select id="category-input" name="category">
+              <option value="dress">Dress</option>
+              <option value="jewellery">Jewellery</option>
+            </select>
           </div>
 
           <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
@@ -167,26 +154,41 @@ const Products: React.FC<Props> = (props) => {
               <input id="isfeatured-input" name="isfeatured" type="checkbox" />
             </div>
           </div>
+
+          <div className="flex flex-col h-auto w-5/6 py-1 justify-between mb-6">
+            <label htmlFor="image-input" className="text-xl">
+              Image
+            </label>
+            <input
+              id="image-input"
+              name="image"
+              type="file"
+              accept="image/png, image/jpg, image/webp"
+              className="h-10 w-full border-2 px-4"
+            />
+          </div>
           <Button type="submit" variant="secondary">
             Submit
           </Button>
         </Form>
-      )}
+      </div>
 
-      {/* Featured Items */}
-      <ProductContainer
-        title="Dresses"
-        height="379"
-        width="252"
-        product={data.dressProducts}
-      />
-      {/* Jwellery Set */}
-      <ProductContainer
-        title="Jewellery Set"
-        height="256"
-        width="256"
-        product={data.jewelleryProducts}
-      />
+      <div className="w-3/4 flex flex-col items-center">
+        {/* Featured Items */}
+        <ProductContainer
+          title="Dresses"
+          height="379"
+          width="252"
+          product={data.dressProducts}
+        />
+        {/* Jwellery Set */}
+        <ProductContainer
+          title="Jewellery Set"
+          height="256"
+          width="256"
+          product={data.jewelleryProducts}
+        />
+      </div>
     </div>
   );
 };

@@ -48,7 +48,7 @@ const Productdetails = () => {
         </Link>
       </div>
       <div className="mt-10 max-w-7xl mx-auto flex">
-        <img src={data.product.image} height="600" width="400" />
+        <img src={`/uploads/${data.product.image}`} height="600" width="400" />
         <div className="text-3xl ml-10">
           <p>{data.product.name}</p>
           <p>Rs. {data.product.price}</p>
