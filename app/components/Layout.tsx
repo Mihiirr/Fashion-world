@@ -89,7 +89,9 @@ const Layout: React.FC<Props> = ({ children }) => {
           <div className="h-full w-4/12 py-8 flex flex-col items-center">
             <p className="text-2xl mb-5">Reach out to us</p>
             <div className="flex justify-between w-16">
-              <InstagramIcon className="hover:cursor-pointer" />
+              <a href="https://instagram.com/mihiirrrrrr" target="_blank">
+                <InstagramIcon className="hover:cursor-pointer" />
+              </a>
               <FacebookIcon className="hover:cursor-pointer" />
             </div>
           </div>

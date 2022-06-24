@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Josefin Slab", ...defaultTheme.fontFamily.sans],
+        sans: ["'Lora' 'Smooch' cursive", ...defaultTheme.fontFamily.sans],
       },
     },
   },

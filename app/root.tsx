@@ -29,7 +29,7 @@ export const links: LinksFunction = () => {
     { rel: "stylesheet", href: styles },
     {
       rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@500&display=swap",
+      href: "https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,500&family=Smooch&display=swap",
     },
   ];
 };
