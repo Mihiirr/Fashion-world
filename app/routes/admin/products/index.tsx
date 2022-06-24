@@ -3,10 +3,9 @@ import {
   ActionFunction,
   json,
   LoaderFunction,
-  unstable_createFileUploadHandler,
   unstable_parseMultipartFormData,
 } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import ProductContainer from "~/components/Admin/products/ProductContainer";
 import Button from "~/components/Button";
 import {
@@ -71,6 +70,9 @@ export const action: ActionFunction = async ({ request }) => {
     return {
       formError: `Form not submitted correctly.`,
     };
+  }
+  if (!imageUrl) {
+    throw new Error("Somthing went wrong while uploading image!!!");
   }
   return addAProduct(
     name,
