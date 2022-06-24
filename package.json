@@ -32,7 +32,7 @@
   },
   "prisma": {
     "schema": "prisma/schema.prisma",
-    "seed": "node --require esbuild-register prisma/seed-data.ts"
+    "seed": "node --require esbuild-register prisma/seed.ts"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.2.3",
