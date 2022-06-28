@@ -19,9 +19,11 @@ import styles from "./styles/app.css";
 import { getUser } from "./services/session.server";
 import { RootContextProvider } from "./context/RootContext";
 import React from "react";
+import { getCartItems } from "./services/queries/cart.server";
 
 type LoaderData = {
   user: Awaited<ReturnType<typeof getUser>>;
+  cart: Awaited<ReturnType<typeof getCartItems>>;
 };
 
 export const links: LinksFunction = () => {
@@ -36,8 +38,10 @@ export const links: LinksFunction = () => {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
+  const cart = await getCartItems(user?.id!);
   const data: LoaderData = {
     user,
+    cart,
   };
   return json(data);
 };
@@ -83,6 +87,7 @@ export default function App() {
   const loaderData = useLoaderData();
   const rootContextData = {
     user: loaderData.user,
+    cart: loaderData.cart,
     isAuthModalOpen: false,
   };
   return (

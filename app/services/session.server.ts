@@ -85,10 +85,10 @@ export async function getUser(request: Request) {
     const user = await db.user.findUnique({
       where: { id: userId },
       select: {
+        id: true,
         username: true,
         email: true,
         role: true,
-        Order: true,
       },
     });
     return user;

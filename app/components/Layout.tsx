@@ -12,10 +12,21 @@ type Props = {
   children: React.ReactNode;
 };
 
+const UserOptions = [
+  {
+    Url: "/account/profile",
+    name: "Profile",
+  },
+  {
+    Url: "/account/order-history",
+    name: "Order history",
+  },
+];
+
 const Layout: React.FC<Props> = ({ children }) => {
   const [UserDropdown, SetUserDropdown] = useState(false);
   const {
-    rootState: { user },
+    rootState: { user, cart },
   } = useRootContext();
 
   const userProfileClickHandler = () => {
@@ -24,7 +35,7 @@ const Layout: React.FC<Props> = ({ children }) => {
   return (
     <div className="bg-stone-50">
       {/* Header */}
-      <div className="h-20 w-full border-b-2 border-gray-200 bg-white flex items-center px-8 mb-20">
+      <div className="h-20 w-full border-b-2 border-gray-200 bg-white flex items-center px-8">
         <div className="w-4/12">
           <SearchIcon className="rounded-md hover:cursor-pointer" />
         </div>
@@ -53,11 +64,16 @@ const Layout: React.FC<Props> = ({ children }) => {
                         </div>
                       </Link>
                     )}
-                    <Link to="/account/profile">
-                      <div className="hover:bg-stone-200 hover:cursor-pointer rounded-md flex items-center px-2 h-10 text-xl">
-                        My Account
-                      </div>
-                    </Link>
+                    {UserOptions.map((val) => (
+                      <Link to={val.Url}>
+                        <div
+                          key={val.name}
+                          className="hover:bg-stone-200 hover:cursor-pointer rounded-md flex items-center px-2 h-10 text-xl"
+                        >
+                          {val.name}
+                        </div>
+                      </Link>
+                    ))}
                     <form action="/account/logout" method="post">
                       <button
                         type="submit"
@@ -69,8 +85,13 @@ const Layout: React.FC<Props> = ({ children }) => {
                   </div>
                 )}
               </div>
-              <Link to="/cart">
+              <Link to="/cart" className="flex">
                 <CartIcon className="rounded-md hover:cursor-pointer" />
+                {cart.totalCartItems[0]._count.productId === 0 ? (
+                  <p></p>
+                ) : (
+                  <p>{cart.totalCartItems[0]._count.productId}</p>
+                )}
               </Link>
             </div>
           )}
@@ -81,7 +102,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       <div>{children}</div>
 
       {/* Footer */}
-      <div className="h-64 w-full bg-stone-200 mt-20">
+      <div className="h-64 w-full bg-stone-200">
         <div className="h-full max-w-7xl mx-auto flex">
           <div className="h-full w-4/12 flex items-center justify-center">
             <Logo size="medium" />

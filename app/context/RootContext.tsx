@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { Cart, Order, User } from "@prisma/client";
 import {
   createContext,
   useCallback,
@@ -7,7 +7,16 @@ import {
   useReducer,
 } from "react";
 
-type State = { user: User | null; isAuthModalOpen: boolean; postSlug?: string };
+type State = {
+  user: User | null;
+  // order: Array<Order> | null;
+  cart: {
+    cartItems: Array<Cart>;
+    totalCartItems: [{ userId: string; _count: { productId: number } }];
+  };
+  isAuthModalOpen: boolean;
+  postSlug?: string;
+};
 
 type RootContextProviderProps = {
   children: React.ReactNode;
