@@ -1,9 +1,9 @@
+import { Product } from "@prisma/client";
 import { json, LoaderFunction, MetaFunction } from "@remix-run/node";
 import { Link, useCatch, useLoaderData, useParams } from "@remix-run/react";
-import Layout from "~/components/Layout";
-import { getUniqueProducts } from "~/services/queries/product.server";
 import Button from "~/components/Button";
-import type { Product } from "@prisma/client";
+import EditIcon from "~/components/Icons/EditIcon";
+import { getUniqueProducts } from "~/services/queries/product.server";
 
 export const meta: MetaFunction = ({
   data,
@@ -25,7 +25,7 @@ export const meta: MetaFunction = ({
 type LoaderData = { product: Product };
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const productID = params.productid;
+  const productID = params.prodid;
   const product = await getUniqueProducts(productID!);
   if (!product) {
     throw new Response("What a product! Not found.", {
@@ -38,30 +38,70 @@ export const loader: LoaderFunction = async ({ params }) => {
   return json(data);
 };
 
-const Productdetails = () => {
+const AdminProductDetail = () => {
   const data = useLoaderData<LoaderData>();
   return (
-    <Layout>
+    <div>
       <div className="mt-10 max-w-7xl mx-auto flex">
-        <Link to="/">
+        <Link to="/admin/products">
           <Button>Back to Products</Button>
         </Link>
       </div>
       <div className="mt-10 max-w-7xl mx-auto flex">
         <img src={`/uploads/${data.product.image}`} height="600" width="400" />
-        <div className="text-3xl ml-10">
-          <p>{data.product.name}</p>
-          <p>Rs. {data.product.price}</p>
-          <p className="mb-4">peace white</p>
-          {data.product.isNew && <p className="text-sm mb-4">"New Arrival"</p>}
-          <Button variant="secondary">Add to cart</Button>
-        </div>
+        <form method="post" className="text-2xl ml-10">
+          <div className="flex items-center">
+            <p>{data.product.name}</p>
+            <div className="h-6 w-6 ml-2 bg-stone-200 flex items-center justify-center rounded-md hover:bg-stone-300 active:bg-stone-400">
+              <EditIcon />
+            </div>
+          </div>
+          <div className="flex items-center">
+            <p>Rs. {data.product.price}</p>
+            <div className="h-6 w-6 ml-2 bg-stone-200 flex items-center justify-center rounded-md hover:bg-stone-300 active:bg-stone-400">
+              <EditIcon />
+            </div>
+          </div>
+          <div className="flex items-center">
+            <p>peace white</p>
+            <div className="h-6 w-6 ml-2 bg-stone-200 flex items-center justify-center rounded-md hover:bg-stone-300 active:bg-stone-400">
+              <EditIcon />
+            </div>
+          </div>
+          <div className="flex items-center h-auto w-20">
+            <label htmlFor="isnew-input" className="text-2xl">
+              IsNew
+            </label>
+            <input
+              id="isnew-input"
+              name="isnew"
+              type="checkbox"
+              className="ml-2"
+              checked={data.product.isNew}
+            />
+          </div>
+          <div className="flex items-center h-auto w-20">
+            <label htmlFor="isfeatured-input" className="text-2xl">
+              IsFeatured
+            </label>
+            <input
+              id="isfeatured-input"
+              name="isfeatured"
+              type="checkbox"
+              className="ml-2"
+              checked={data.product.isFeatured}
+            />
+          </div>
+          <Button variant="secondary" type="submit">
+            Save Changes
+          </Button>
+        </form>
       </div>
-    </Layout>
+    </div>
   );
 };
 
-export default Productdetails;
+export default AdminProductDetail;
 
 export function CatchBoundary() {
   const caught = useCatch();

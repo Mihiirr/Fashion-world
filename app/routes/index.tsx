@@ -1,23 +1,36 @@
-import { LoaderFunction } from "@remix-run/node";
+import { json, LoaderFunction } from "@remix-run/node";
 import ItemContainer from "~/components/ItemContainer";
 import Layout from "~/components/Layout";
 import { useLoaderData } from "@remix-run/react";
-import {
-  getAllDressProduct,
-  getAllJewelleryProduct,
-} from "../../prisma/seed-data";
+import { getUniqueCategoryFeaturedProducts } from "~/services/queries/product.server";
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const DressProducts = await getAllDressProduct();
-  const JewelleryProducts = await getAllJewelleryProduct();
-  return {
-    DressProducts,
-    JewelleryProducts,
+type LoaderData = {
+  FeaturedDressProducts: Array<{ id: string; image: string; isNew: boolean }>;
+  FeaturedJewelleryProducts: Array<{
+    id: string;
+    image: string;
+    isNew: boolean;
+  }>;
+};
+
+export const loader: LoaderFunction = async () => {
+  const FeaturedDressProducts = await getUniqueCategoryFeaturedProducts(
+    "dress"
+  );
+  const FeaturedJewelleryProducts = await getUniqueCategoryFeaturedProducts(
+    "jewellery"
+  );
+
+  const data: LoaderData = {
+    FeaturedDressProducts,
+    FeaturedJewelleryProducts,
   };
+  return json(data);
 };
 
 export default function Index() {
-  const { DressProducts, JewelleryProducts } = useLoaderData();
+  const { FeaturedDressProducts, FeaturedJewelleryProducts } =
+    useLoaderData<LoaderData>();
   return (
     <Layout>
       {/* Corousel */}
@@ -35,7 +48,7 @@ export default function Index() {
         title="Featured Items"
         height="379"
         width="252"
-        product={DressProducts}
+        product={FeaturedDressProducts}
       />
 
       {/* Jwellery Set */}
@@ -43,7 +56,7 @@ export default function Index() {
         title="Jewellery Set"
         height="256"
         width="256"
-        product={JewelleryProducts}
+        product={FeaturedJewelleryProducts}
       />
     </Layout>
   );

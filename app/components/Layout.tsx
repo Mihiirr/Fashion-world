@@ -7,7 +7,6 @@ import UserIcon from "./Icons/UserIcon";
 import Logo from "./Logo";
 import { useRootContext } from "~/context/RootContext";
 import CartIcon from "./Icons/CartIcon";
-import { User } from "@prisma/client";
 
 type Props = {
   children: React.ReactNode;
@@ -23,9 +22,9 @@ const Layout: React.FC<Props> = ({ children }) => {
     SetUserDropdown(!UserDropdown);
   };
   return (
-    <div>
+    <div className="bg-stone-50">
       {/* Header */}
-      <div className="h-20 max-w-7xl mx-auto flex items-center justify-between">
+      <div className="h-20 w-full border-b-2 border-gray-200 bg-white flex items-center px-8 mb-20">
         <div className="w-4/12">
           <SearchIcon className="rounded-md hover:cursor-pointer" />
         </div>
@@ -33,7 +32,11 @@ const Layout: React.FC<Props> = ({ children }) => {
           <Logo size="large" />
         </div>
         <div className="w-4/12 flex justify-end">
-          {user ? (
+          {!user ? (
+            <Link to="/account/login">
+              <UserIcon className="rounded-md hover:cursor-pointer" />
+            </Link>
+          ) : (
             <div className="flex items-center justify-between">
               <p className="text-lg mr-5">Hello {user.username}</p>
               <div>
@@ -66,12 +69,10 @@ const Layout: React.FC<Props> = ({ children }) => {
                   </div>
                 )}
               </div>
-              <CartIcon className="rounded-md hover:cursor-pointer" />
+              <Link to="/cart">
+                <CartIcon className="rounded-md hover:cursor-pointer" />
+              </Link>
             </div>
-          ) : (
-            <Link to="/account/login">
-              <UserIcon className="rounded-md hover:cursor-pointer" />
-            </Link>
           )}
         </div>
       </div>
@@ -88,7 +89,9 @@ const Layout: React.FC<Props> = ({ children }) => {
           <div className="h-full w-4/12 py-8 flex flex-col items-center">
             <p className="text-2xl mb-5">Reach out to us</p>
             <div className="flex justify-between w-16">
-              <InstagramIcon className="hover:cursor-pointer" />
+              <a href="https://instagram.com/mihiirrrrrr" target="_blank">
+                <InstagramIcon className="hover:cursor-pointer" />
+              </a>
               <FacebookIcon className="hover:cursor-pointer" />
             </div>
           </div>

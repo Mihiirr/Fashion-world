@@ -26,7 +26,7 @@ const Logo: React.FC<Props> = (props) => {
   const sizeStyles = SizeVariantStyles[size];
   return (
     <Link to="/">
-      <div className={Object.values(sizeStyles).join(" ")}>FASHION ₰ WORLD</div>
+      <div className={Object.values(sizeStyles).join(" ")}>Glammy Girl</div>
     </Link>
   );
 };

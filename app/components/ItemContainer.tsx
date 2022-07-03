@@ -8,10 +8,7 @@ type Props = {
   width: string;
   product: {
     id: string;
-    name: string;
     image: string;
-    category: string;
-    price: string;
     isNew: boolean;
   }[];
 };
@@ -30,7 +27,7 @@ const ItemContainer: React.FC<Props> = (props) => {
         {props.product.map((items) => (
           <Link to={items.id} key={items.id}>
             <img
-              src={items.image}
+              src={`/uploads/${items.image}`}
               height={props.height}
               width={props.width}
               alt="items"
