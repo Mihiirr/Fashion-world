@@ -8,7 +8,7 @@ type Props = {};
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await getUser(request);
-  if (user?.role === "USER") return redirect("/", 301);
+  if (user?.role === "USER" || !user) return redirect("/", 301);
   return null;
 };
 

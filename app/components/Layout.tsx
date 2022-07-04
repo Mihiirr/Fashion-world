@@ -35,13 +35,13 @@ const Layout: React.FC<Props> = ({ children }) => {
   return (
     <div className="bg-stone-50">
       {/* Header */}
-      <div className="h-20 w-full border-b-2 border-gray-200 bg-white flex items-center px-8">
-        <div className="w-4/12">
+      <div className="h-36 lg:h-20 w-full border-b-2 border-gray-200 bg-white flex items-center justify-between px-8">
+        <div className="hidden lg:w-4/12">
           <SearchIcon className="rounded-md hover:cursor-pointer" />
         </div>
-        <div className="w-4/12 flex items-center justify-center">
-          <Logo size="large" />
-        </div>
+        {/* <div className="w-4/12 bg-green-300 flex items-center justify-start"> */}
+        <Logo size="large" />
+        {/* </div> */}
         <div className="w-4/12 flex justify-end">
           {!user ? (
             <Link to="/account/login">
@@ -49,7 +49,7 @@ const Layout: React.FC<Props> = ({ children }) => {
             </Link>
           ) : (
             <div className="flex items-center justify-between">
-              <p className="text-lg mr-5">Hello {user.username}</p>
+              <p className="text-4xl lg:text-lg mr-5">Hi, {user.username}!</p>
               <div>
                 <UserIcon
                   className="mr-3 rounded-md hover:cursor-pointer"
@@ -87,10 +87,10 @@ const Layout: React.FC<Props> = ({ children }) => {
               </div>
               <Link to="/cart" className="flex">
                 <CartIcon className="rounded-md hover:cursor-pointer" />
-                {cart.totalCartItems[0]._count.productId === 0 ? (
+                {cart.totalCartItems[0]?._count.productId === 0 ? (
                   <p></p>
                 ) : (
-                  <p>{cart.totalCartItems[0]._count.productId}</p>
+                  <p>{cart.totalCartItems[0]?._count.productId}</p>
                 )}
               </Link>
             </div>
@@ -102,13 +102,15 @@ const Layout: React.FC<Props> = ({ children }) => {
       <div>{children}</div>
 
       {/* Footer */}
-      <div className="h-64 w-full bg-stone-200">
-        <div className="h-full max-w-7xl mx-auto flex">
+      <div className="h-74 w-full bg-stone-200 mt-10">
+        <div className="h-full lg:max-w-7xl lg:mx-auto flex flex-col items-center lg:flex-row">
           <div className="h-full w-4/12 flex items-center justify-center">
-            <Logo size="medium" />
+            <Logo size="large" />
           </div>
           <div className="h-full w-4/12 py-8 flex flex-col items-center">
-            <p className="text-2xl mb-5">Reach out to us</p>
+            <p className="text-4xl lg:text-2xl mb-5 underline lg:no-underline">
+              Reach out to us
+            </p>
             <div className="flex justify-between w-16">
               <a href="https://instagram.com/mihiirrrrrr" target="_blank">
                 <InstagramIcon className="hover:cursor-pointer" />
@@ -116,9 +118,11 @@ const Layout: React.FC<Props> = ({ children }) => {
               <FacebookIcon className="hover:cursor-pointer" />
             </div>
           </div>
-          <div className="h-full w-4/12 p-8 flex flex-col items-center">
-            <p className="text-2xl mb-5">Contact Us</p>
-            <div>
+          <div className="h-full lg:w-4/12 p-8 flex flex-col items-center">
+            <p className="text-4xl lg:text-2xl mb-5 underline lg:no-underline">
+              Contact Us
+            </p>
+            <div className="w-full text-2xl lg:text-lg">
               <p>
                 Vaishnavi Signature, No. 78/9, Outer Ring Road, Bellandur,
                 Varthur Hobli, Bengaluru-560103, Karnataka, India

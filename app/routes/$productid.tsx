@@ -65,29 +65,49 @@ const Productdetails = () => {
   const data = useLoaderData<LoaderData>();
   return (
     <Layout>
-      <div className="flex">
-        <div className="h-screen w-2/5 bg-stone-100 flex items-center justify-center">
+      <div className="flex flex-col items-center bg-stone-200">
+        <div className="h-full lg:h-4/5 w-full flex justify-center">
           <img
             src={`/uploads/${data.product.image}`}
-            height="600"
-            width="400"
+            className="h-[1200px] w-[800px] lg:h-[600px] lg:w-[400px]"
           />
-        </div>
-        <div className="h-screen w-3/5 pt-20 pl-20">
-          <div className="text-3xl">
-            <p>{data.product.name}</p>
-            <p className="text-xl text-gray-500">peace white</p>
-            <p>Rs. {data.product.price}</p>
-            {data.product.isNew && (
-              <p className="text-sm mb-4">"New Arrival"</p>
-            )}
-            <div className="w-1/4">
-              <form method="post">
-                <Button type="submit" variant="secondary">
-                  Add to cart
-                </Button>
-              </form>
+          {data.product.isNew && (
+            <div className="absolute h-5 flex items-center justify-end text-3xl lg:text-sm">
+              New Arrival
             </div>
+          )}
+        </div>
+        <div className="h-full w-full lg:w-4/5 bg-white p-10 flex flex-col items-center rounded-t-[70px] lg:rounded-t-3xl">
+          <div className="w-full lg:w-2/5 lg:text-3xl text-6xl">
+            <div className="flex w-full justify-between">
+              <p>{data.product.name}</p>
+              <p>Rs. {data.product.price}</p>
+            </div>
+            <p className="text-3xl lg:text-xl text-gray-500 mb-5">
+              peace white
+            </p>
+
+            {data.product.category === "dress" && (
+              <div>
+                <div>Size</div>
+                <div className="mb-5 flex">
+                  <div className="h-12 w-12 lg:h-8 lg:w-8 mr-2 rounded-full bg-black text-white flex items-center justify-center lg:text-lg text-2xl">
+                    S
+                  </div>
+                  <div className="h-12 w-12 lg:h-8 lg:w-8 mr-2 rounded-full bg-black text-white flex items-center justify-center lg:text-lg text-2xl">
+                    M
+                  </div>
+                  <div className="h-12 w-12 lg:h-8 lg:w-8 rounded-full bg-black text-white flex items-center justify-center lg:text-lg text-2xl">
+                    XL
+                  </div>
+                </div>
+              </div>
+            )}
+            <form method="post">
+              <Button type="submit" variant="secondary">
+                Add to cart
+              </Button>
+            </form>
           </div>
         </div>
       </div>

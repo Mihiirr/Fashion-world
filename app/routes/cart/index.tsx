@@ -12,7 +12,7 @@ const Cart = () => {
     <Layout>
       <div className="min-h-screen mt-20 max-w-7xl mx-auto">
         <p className="text-3xl">Shopping Cart</p>
-        {cart.totalCartItems[0]._count.productId === 0 ? (
+        {cart.totalCartItems[0]?._count.productId === undefined ? (
           <p>Your shopping bag is empty</p>
         ) : (
           <div className="flex">

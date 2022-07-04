@@ -33,6 +33,10 @@ export const links: LinksFunction = () => {
       rel: "stylesheet",
       href: "https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,500&family=Smooch&display=swap",
     },
+    {
+      rel: "stylesheet",
+      href: "https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,500&family=Smooch&family=The+Nautigal:wght@700&display=swap",
+    },
   ];
 };
 
@@ -90,6 +94,7 @@ export default function App() {
     cart: loaderData.cart,
     isAuthModalOpen: false,
   };
+  console.log({ loaderData });
   return (
     <RootContextProvider initState={rootContextData}>
       <Document>
